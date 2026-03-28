@@ -39,9 +39,12 @@ prompt Arquivo de Log: &logname
 
 prompt verificar se o usuário do BD é o esperado
 declare
+  l_expected_user varchar2(128) := '&env_schema_name';
 begin
-  if user != '&env_schema_name' or '&env_schema_name' is null then
-    raise_application_error(-20001, 'Deve ser executado como &env_schema_name');
+  if l_expected_user is null then
+    raise_application_error(-20001, 'env_schema_name não está definido');
+  elsif user != l_expected_user then
+    raise_application_error(-20001, 'Deve ser executado como ' || l_expected_user || ', mas está conectado como ' || user);
   end if;
 end;
 /

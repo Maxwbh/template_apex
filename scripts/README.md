@@ -4,7 +4,7 @@ Os arquivos nesta pasta podem ser usados para múltiplos propósitos, como compi
 
 - [Arquivos](#arquivos)
 - [`apex_disable.sql`](#apex_disablesql)
-- [`apex_export_app.sql`](#apex_export_appsql)
+- [`apex_export.sql`](#apex_exportsql)
 - [`helper.sh`](#helpersh)
   - [Variáveis de Ambiente](#variáveis-de-ambiente)
   - [Funções](#funções)
@@ -22,7 +22,7 @@ Os arquivos nesta pasta podem ser usados para múltiplos propósitos, como compi
 
 Arquivo | Descrição
 --- | ---
-[`apex_export_app.sql`](#apex_export_appsql) | Exporta uma aplicação APEX
+[`apex_export.sql`](#apex_exportsql) | Exporta uma aplicação APEX
 [`helper.sh`](#helpersh) | Funções auxiliares que todos os outros scripts devem chamar. Carrega `config.sh`
 `project-config.sh` | Configuração do projeto
 [`user-config.sh`](#user-configsh) | Este arquivo será gerado automaticamente quando qualquer script bash for executado pela primeira vez. É auto-documentado.
@@ -46,7 +46,7 @@ echo exit | sqlcl usuario/senha123@localhost:32118/xe @apex_disable.sql 100,200
 
 
 
-## `apex_export_app.sql`
+## `apex_export.sql`
 
 Este script requer [SQLcl](https://www.oracle.com/ca-en/database/technologies/appdev/sqlcl.html)
 
