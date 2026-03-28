@@ -1,15 +1,19 @@
-# Project Code Templates
+# Templates de Código do Projeto
 
-This folder contains code templates for use for your project. Some starter templates are provided and should be adjusted for each project.
+Esta pasta contém templates de código para uso no seu projeto. Alguns templates iniciais são fornecidos e devem ser ajustados para cada projeto.
 
-Most of the templates have a keyword `CHANGEME` in them that can easily be replaced with the name of the object being created. [Vistual Studio Code](https://code.visualstudio.com/)(VSCode) has a [`multi-cursor`](https://code.visualstudio.com/docs/editor/codebasics#_multiple-selections-multicursor) selection shortcut that will allow for quick text replacement.
+A maioria dos templates possui a palavra-chave `CHANGEME` que pode ser facilmente substituída pelo nome do objeto que está sendo criado. O [Visual Studio Code](https://code.visualstudio.com/) (VSCode) possui um atalho de seleção [`multi-cursor`](https://code.visualstudio.com/docs/editor/codebasics#_multiple-selections-multicursor) que permite substituição rápida de texto.
 
-If using VSCode you may want to move these templates into the [`.vscode`](../.vscode) folder and setup project based [snippets](https://code.visualstudio.com/docs/editor/userdefinedsnippets) for your team to use. See [Project snippet scope](https://code.visualstudio.com/docs/editor/userdefinedsnippets) for more info.
+Se estiver usando o VSCode, você pode mover estes templates para a pasta [`.vscode`](../.vscode) e configurar [snippets](https://code.visualstudio.com/docs/editor/userdefinedsnippets) baseados em projeto para sua equipe usar. Veja [Escopo de snippet do projeto](https://code.visualstudio.com/docs/editor/userdefinedsnippets) para mais informações.
 
 
-File | Description
+Arquivo | Descrição
 --- | ---
-`template_data.sql` | For re-runnable data scripts (usually for lookup tables).
-`template_pkg.pkb` | Package body and procedure/function template
+`template_data.sql` | Para scripts de dados re-executáveis (geralmente para tabelas de lookup).
+`template_pkg.pkb` | Template de package body e procedure/function
 `template_pkg.pks` | Package spec
-`template_table.sql` | Table creation. *Note: it's expected this file will be changed for each project as naming standards differ*
+`template_table.sql` | Criação de tabela. *Nota: é esperado que este arquivo seja alterado para cada projeto, pois padrões de nomenclatura diferem*
+
+---
+
+> **Mantido por:** [@maxwbh](https://github.com/maxwbh) — Maxwell da Silva Oliveira — M&S do Brasil LTDA

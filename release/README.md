@@ -1,48 +1,48 @@
 # Release
 
-- [Structure](#structure)
+- [Estrutura](#estrutura)
   - [`_release.sql`](#_releasesql)
-  - [`all_....sql` files](#all_sql-files)
-  - [The `code` folder](#the-code-folder)
-- [Release Process](#release-process)
-  - [Concept 1: Code is tagged each time it is run in Production](#concept-1-code-is-tagged-each-time-it-is-run-in-production)
-  - [Concept 2: Code is tagged each time it leaves Dev](#concept-2-code-is-tagged-each-time-it-leaves-dev)
-  - [Running a Release in Production](#running-a-release-in-production)
-- [Tips](#tips)
-  - [Run Release Manually](#run-release-manually)
+  - [Arquivos `all_....sql`](#arquivos-all_sql)
+  - [A pasta `code`](#a-pasta-code)
+- [Processo de Release](#processo-de-release)
+  - [Conceito 1: Código é marcado (tag) cada vez que é executado em Produção](#conceito-1-código-é-marcado-tag-cada-vez-que-é-executado-em-produção)
+  - [Conceito 2: Código é marcado (tag) cada vez que sai de Dev](#conceito-2-código-é-marcado-tag-cada-vez-que-sai-de-dev)
+  - [Executando um Release em Produção](#executando-um-release-em-produção)
+- [Dicas](#dicas)
+  - [Executar Release Manualmente](#executar-release-manualmente)
 
-This folder contains examples on how to structure release along with various options on **how** to do a release. Before proceeding you should have a [Git workflow](../README.md#git-workflows) as some of the `git` examples may need to be altered to cater towards the chosen workflow.
+Esta pasta contém exemplos de como estruturar releases junto com várias opções de **como** realizar um release. Antes de prosseguir, você deve ter um [fluxo de trabalho Git](../README.md#fluxos-de-trabalho-git) definido, pois alguns dos exemplos de `git` podem precisar ser adaptados ao fluxo de trabalho escolhido.
 
-## Structure
+## Estrutura
 
-Some files are provided by default to help guide your release process
+Alguns arquivos são fornecidos por padrão para ajudar a guiar seu processo de release.
 
 
-### `_release.sql` 
+### `_release.sql`
 
-Example release script. This is the only file that will be run for each release. Inside `_release.sql` it references other files that are required for the release. By having a single consistent file for each release it helps simplify release scripts if using automated scripting tools.  
+Script de release de exemplo. Este é o único arquivo que será executado para cada release. Dentro de `_release.sql`, ele referencia outros arquivos necessários para o release. Ao ter um único arquivo consistente para cada release, isso ajuda a simplificar os scripts de release ao usar ferramentas de automação.
 
-You must review this file and modify it accordingly for your project needs. Again, every project is different and it's expected that this file should be modified to meet your project's needs. 
+Você deve revisar este arquivo e modificá-lo conforme as necessidades do seu projeto. Novamente, cada projeto é diferente e é esperado que este arquivo seja modificado para atender às necessidades do seu projeto.
 
-### `all_....sql` files
+### Arquivos `all_....sql`
 
-They're several `all*.sql` files which are described below. All of the files that are flagged as auto generated are generated during the [build](../build) process.
+Existem vários arquivos `all*.sql` descritos abaixo. Todos os arquivos marcados como gerados automaticamente são gerados durante o processo de [build](../build).
 
-File | Auto Generated | Description
+Arquivo | Gerado Automaticamente | Descrição
 --- | --- | ---
-[`all_apex.sql`](all_apex.sql) | Yes | Will install all the APEX applications as defined in [`scripts/project-config.sh`](../scripts/project-config.sh)
-[`all_data.sql`](all_data.sql) | No | Runs all the re-runnable data scripts. You must manually add references to this file as order matters
-[`all_packages.sql`](all_packages.sql) | Yes | References all the packages in the `packages` folder. By default this will run all the `.pks` files first then the `pkb` files next
-[`all_views.sql`](all_views.sql) | Yes | References all the views in the `views` folder
-[`load_env_vars.sql`](load_env_vars.sql) | Yes | Loads some of the environment variables, defined in [`scripts/project-config.sh`](../scripts/project-config.sh), into SQL session
+[`all_apex.sql`](all_apex.sql) | Sim | Instalará todas as aplicações APEX conforme definido em [`scripts/project-config.sh`](../scripts/project-config.sh)
+[`all_data.sql`](all_data.sql) | Não | Executa todos os scripts de dados re-executáveis. Você deve adicionar referências manualmente a este arquivo, pois a ordem importa
+[`all_packages.sql`](all_packages.sql) | Sim | Referencia todos os packages na pasta `packages`. Por padrão, executará primeiro todos os arquivos `.pks` e depois os arquivos `.pkb`
+[`all_views.sql`](all_views.sql) | Sim | Referencia todas as views na pasta `views`
+[`load_env_vars.sql`](load_env_vars.sql) | Sim | Carrega algumas variáveis de ambiente, definidas em [`scripts/project-config.sh`](../scripts/project-config.sh), na sessão SQL
 
 
 
-### The `code` folder
+### A pasta `code`
 
-This folder stores non-rerunable code specific to each release. It's recommended to create a file per-ticket. Ex: `code/issue-123.sql`. The contents of `code/issue-123.sql` may contain things such as DDL and DML statements. Re-runnable code (such as views, packages, etc) **should not** be in here. Instead, store them in their appropriate folders included with this project. After each release the contents of the `code` folder will be deleted as it is no longer required.
+Esta pasta armazena código não re-executável específico de cada release. É recomendado criar um arquivo por ticket. Ex: `code/issue-123.sql`. O conteúdo de `code/issue-123.sql` pode conter coisas como instruções DDL e DML. Código re-executável (como views, packages, etc.) **não deve** estar aqui. Em vez disso, armazene-os nas pastas apropriadas incluídas neste projeto. Após cada release, o conteúdo da pasta `code` será excluído, pois não é mais necessário.
 
-Each file created in the `code` should be added to `code/_run_release_code.sql`. This file should be cleared after each release. Examples of what `code/_run_release_code.sql` would look like:
+Cada arquivo criado na pasta `code` deve ser adicionado a `code/_run_release_code.sql`. Este arquivo deve ser limpo após cada release. Exemplos de como `code/_run_release_code.sql` ficaria:
 
 ```sql
 @issue-123.sql
@@ -50,205 +50,209 @@ Each file created in the `code` should be added to `code/_run_release_code.sql`.
 ```
 
 
-## Release Process
+## Processo de Release
 
-Oracle releases are very "unforgiving" (i.e. if an error occurs it can ruin the entire rest of release and make it difficult to back out). This can make it very difficult to run standard CI/CD tools to dor releases in Oracle as one error can completely corrupt an environment and it may not be easy to "restore" the schema to a point in time before the release. *Note: Making releases scripts re-runnable or providing roll back support is not impossible however it can be very expensive to do so properly.*, 
+Releases Oracle são muito "implacáveis" (ou seja, se um erro ocorrer, pode arruinar todo o restante do release e dificultar a reversão). Isso pode tornar muito difícil executar ferramentas padrão de CI/CD para releases Oracle, pois um erro pode corromper completamente um ambiente e pode não ser fácil "restaurar" o schema para um ponto no tempo anterior ao release. *Nota: Tornar scripts de release re-executáveis ou fornecer suporte a rollback não é impossível, porém pode ser muito custoso fazê-lo adequadamente.*
 
-The rest of this section assumes the following:
-- Release process is not re-runnable. For example if a DDL statement fails there's no way to tell if it's already been run.
-- There is no rollback script to undo all the changes in a given release
-- Code goes from `Dev > Test > Prod`
-- Code can be manually run in the Test environment
+O restante desta seção assume o seguinte:
+- O processo de release não é re-executável. Por exemplo, se uma instrução DDL falhar, não há como saber se ela já foi executada.
+- Não há script de rollback para desfazer todas as alterações de um determinado release
+- O código vai de `Dev > Teste > Prod`
+- O código pode ser executado manualmente no ambiente de Teste
 
-The sections below cover two types of strategies for doing releases. Neither is "better" than the other, they just cover different team and cultural situations. The following assumptions are made for your development process:
+As seções abaixo cobrem dois tipos de estratégias para realizar releases. Nenhuma é "melhor" que a outra; elas apenas cobrem diferentes situações de equipe e cultura. As seguintes premissas são feitas para o seu processo de desenvolvimento:
 
-- "Short" development sprints of ~2 weeks
-- Development team works on block of code, gets released to Test, and then goes to Production quickly
-- Active development occurs in `master` branch
+- Sprints de desenvolvimento "curtos" de ~2 semanas
+- A equipe de desenvolvimento trabalha em um bloco de código, libera para Teste, e então vai para Produção rapidamente
+- O desenvolvimento ativo ocorre na branch `master`
 
 
-Examples below show the process to develop release `1.0.0` of the application. The following variables have been defined to help make these scripts re-runnable:
+Exemplos abaixo mostram o processo para desenvolver o release `1.0.0` da aplicação. As seguintes variáveis foram definidas para ajudar a tornar estes scripts re-executáveis:
 
 ```bash
 RELEASE_VERSION=1.0.0
 GIT_PRE_RELEASE_BRANCH=pre-release-$RELEASE_VERSION
 ```
 
-*Note: [semantic versioning](https://semver.org/) is recommended for version numbers. TL;DR: `major.minor.patch` numbering.*
+*Nota: o [versionamento semântico](https://semver.org/lang/pt-BR/) é recomendado para números de versão. Resumindo: numeração `major.minor.patch`.*
 
-### Concept 1: Code is tagged each time it is run in Production
+### Conceito 1: Código é marcado (tag) cada vez que é executado em Produção
 
-In this process code is tagged each time it **goes to Prod**. This means that every time a patch is applied in Test the release script must be manually updated. This poses a risk in that the order the patches are applied matters. The positive is that it can make releases simpler but requires more manual diligence. The follow example walks through the process.
+Neste processo, o código é marcado cada vez que **vai para Produção**. Isso significa que toda vez que uma correção é aplicada em Teste, o script de release deve ser atualizado manualmente. Isso apresenta um risco de que a ordem das correções aplicadas importa. O aspecto positivo é que pode tornar os releases mais simples, mas requer mais diligência manual. O exemplo a seguir mostra o processo.
 
-- Once the initial sprint is complete code is tagged in a "pre-release" branch:
+- Uma vez que o sprint inicial está completo, o código é marcado em uma branch de "pré-release":
 
 ```bash
 git checkout -b $GIT_PRE_RELEASE_BRANCH master
 git push --set-upstream origin
 ```
 
-- [Run the release manually](#run-release-manually) in the Test environment
-  
-If a bug in Test is found and need to be patched the following will occur (assuming one ddl and one view needs to change)
+- [Execute o release manualmente](#executar-release-manualmente) no ambiente de Teste
+
+Se um bug for encontrado em Teste e precisar ser corrigido, o seguinte ocorrerá (assumindo que um DDL e uma view precisam mudar):
 
 ```bash
 git checkout $GIT_PRE_RELEASE_BRANCH
-# edit release/code/issue-123.sql with new DDL statement
-# edit views/my_view.sql
+# edite release/code/issue-123.sql com a nova instrução DDL
+# edite views/minha_view.sql
 
-# Connect to TEST environment and manually run ddl statement
-# sqlcl <connection_string>
-# 
-# alter table my_table add (new_col varchar2);
-# 
-# @views/my_view.sql
+# Conecte ao ambiente de TESTE e execute manualmente a instrução DDL
+# sqlcl <string_de_conexao>
+#
+# alter table minha_tabela add (nova_coluna varchar2);
+#
+# @views/minha_view.sql
 # exit
 
 
-# Commit changes
+# Commitar alterações
 git add *
-git commit -m "patch fix"
+git commit -m "correção de patch"
 git push
 
-# Merge changes back to master
+# Mesclar alterações de volta ao master
 git checkout master
 git merge $GIT_PRE_RELEASE_BRANCH
 ```
 
-**Important note:** It is critical that when modifying a file with a DDL the DDL is put in the correct order it *should* have been run. 
+**Nota importante:** É crítico que ao modificar um arquivo com DDL, o DDL seja colocado na ordem correta em que *deveria* ter sido executado.
 
-This patching cycle may happen various times. Once is **100% certified** tag the release:
+Este ciclo de correção pode acontecer várias vezes. Uma vez que é **100% certificado**, marque o release:
 
 ```bash
 git checkout $GIT_PRE_RELEASE_BRANCH
 git tag $RELEASE_VERSION
 git push origin --tags
 
-# Remove the pre-release branch
+# Remover a branch de pré-release
 git checkout master
 git push --delete origin $GIT_PRE_RELEASE_BRANCH
 git branch -d $GIT_PRE_RELEASE_BRANCH
 
-# Cleanup the release folder
-# Where <base_folder_name is the root folder of this project>
-# For example if the project's base folder is in /users/martin/git/starter-project-template than the call would be: reset_release starter-project-template
+# Limpar a pasta de release
+# Onde <nome_pasta_base> é a pasta raiz deste projeto
+# Por exemplo, se a pasta base do projeto está em /users/maxwell/git/template_apex, a chamada seria: reset_release template_apex
 source scripts/helper.sh
-reset_release <base_folder_name>
+reset_release <nome_pasta_base>
 ```
 
-To run the release in production see [Running in Production](#running-a-release-in-production) below.
+Para executar o release em produção, veja [Executando em Produção](#executando-um-release-em-produção) abaixo.
 
 
 
-### Concept 2: Code is tagged each time it leaves Dev
+### Conceito 2: Código é marcado (tag) cada vez que sai de Dev
 
-This method is similar to Concept 1 except that it tags code each time it **leaves Dev**  (rather than going into production). 
+Este método é semelhante ao Conceito 1, exceto que marca o código cada vez que ele **sai de Dev** (em vez de ir para produção).
 
-The positive aspect with this approach is that it reduces the risk that releases won't run properly in production. In the first concept when a patch is applied it is manually applied and the release script is altered. There exists possibility that whom ever is patching it may get the order wrong so that when it goes to production it could break.
+O aspecto positivo desta abordagem é que reduz o risco de releases não executarem corretamente em produção. No primeiro conceito, quando uma correção é aplicada, ela é aplicada manualmente e o script de release é alterado. Existe a possibilidade de que quem estiver aplicando a correção erre a ordem, de modo que ao ir para produção, possa quebrar.
 
-The *negative* aspect with this approach is that many releases are created. For example suppose version `1.0.0` is created but a few bugs are found during the testing phase. Versions `1.0.1`, `1.0.2`, and `1.0.3` may also be created for each patch. When going to production all four releases must be deployed. At first glance this sounds like a lot of work but is not much overhead. 
+O aspecto *negativo* desta abordagem é que muitos releases são criados. Por exemplo, suponha que a versão `1.0.0` é criada, mas alguns bugs são encontrados durante a fase de teste. As versões `1.0.1`, `1.0.2` e `1.0.3` também podem ser criadas para cada correção. Ao ir para produção, todos os quatro releases devem ser implantados. À primeira vista, isso parece muito trabalho, mas não é muita sobrecarga.
 
-The follow example shows how this concept is done in git:
+O exemplo a seguir mostra como este conceito é feito no git:
 
-- Once initial code is ready to be deploy to Test, fix any issues, merge back changes, and tag release.
+- Uma vez que o código inicial está pronto para ser implantado em Teste, corrija quaisquer problemas, mescle as alterações de volta, e marque o release.
 
 ```bash
 git checkout -b $GIT_PRE_RELEASE_BRANCH master
 git push --set-upstream origin
 ```
 
-- [Run the release manually](#run-release-manually) in the Test environment
-- Merge changes back into `master` (in case any changes were made), tag code, and clean up release.
+- [Execute o release manualmente](#executar-release-manualmente) no ambiente de Teste
+- Mescle as alterações de volta ao `master` (caso alguma alteração tenha sido feita), marque o código, e limpe o release.
 
 ```bash
-# Make sure any changes made/corrected during the release (in the GIT_PRE_RELEASE_BRANCH) have been committed
-# Merging changes back into master
+# Certifique-se de que todas as alterações feitas/corrigidas durante o release (na GIT_PRE_RELEASE_BRANCH) foram commitadas
+# Mesclando alterações de volta ao master
 git checkout master
-# Get latest code changes.
+# Obter as últimas alterações de código.
 git pull origin master
 git merge $GIT_PRE_REL_BRANCH
 git push origin master
 
 
-# Tag release
+# Marcar release
 git checkout $GIT_PRE_REL_BRANCH
 git tag $RELEASE_VERSION
 git push origin --tags
 
-# Remove pre-release branch (i.e. cleanup)
+# Remover branch de pré-release (ou seja, limpeza)
 git checkout master
 git push --delete origin $GIT_PRE_REL_BRANCH
 git branch -d $GIT_PRE_REL_BRANCH
 
-# Cleanup the release folder
-# Where <base_folder_name is the root folder of this project>
-# For example if the project's base folder is in /users/martin/git/starter-project-template than the call would be: reset_release starter-project-template
+# Limpar a pasta de release
+# Onde <nome_pasta_base> é a pasta raiz deste projeto
+# Por exemplo, se a pasta base do projeto está em /users/maxwell/git/template_apex, a chamada seria: reset_release template_apex
 source scripts/helper.sh
-reset_release <base_folder_name>
+reset_release <nome_pasta_base>
 ```
 
-Each time a code needs to go to the Test environment use the same scripts above. I.e. create another release and run in Test.
+Cada vez que o código precisa ir para o ambiente de Teste, use os mesmos scripts acima. Ou seja, crie outro release e execute em Teste.
 
 
-Once everything is ready to to production the [Running in Production](#running-a-release-in-production) section still applies. Instead of running just one release you may need to run multiple releases to upgrade production. In our example at the beginning of this sections `1.0.0`, `1.0.1`, `1.0.2`, and `1.0.3` would all need to be run.
+Uma vez que tudo estiver pronto para produção, a seção [Executando em Produção](#executando-um-release-em-produção) ainda se aplica. Em vez de executar apenas um release, pode ser necessário executar múltiplos releases para atualizar produção. No nosso exemplo no início desta seção, `1.0.0`, `1.0.1`, `1.0.2` e `1.0.3` todos precisariam ser executados.
 
 
 
-### Running a Release in Production
+### Executando um Release em Produção
 
-To run a release in Production automatically:
+Para executar um release em Produção automaticamente:
 
 ```bash
-# Assume you're starting in root folder
-# Load helper (only required to define $SQLCL variable. Can always hard code the SQLcl executable)
+# Assumindo que você está na pasta raiz
+# Carregar helper (necessário apenas para definir a variável $SQLCL. Sempre é possível codificar diretamente o executável SQLcl)
 source scripts/helper.sh
-# Get tag
-git checkout tags/<CHANGEME_TAG_NAME>
+# Obter tag
+git checkout tags/<ALTERE_NOME_DA_TAG>
 cd release
-# Release includes "exit" as last line
-$SQLCL <prod_connection_string> @_release.sql
-# Release does not include "exit" as last line (the default _release.sql contains an exit statement)
-# echo exit | $SQLCL <prod_connection_string> @_release.sql
+# O release inclui "exit" como última linha
+$SQLCL <string_conexao_prod> @_release.sql
+# O release não inclui "exit" como última linha (o _release.sql padrão contém uma instrução exit)
+# echo exit | $SQLCL <string_conexao_prod> @_release.sql
 
-# Show if any errors occurred (optional)
-# Add additional logic that is applicable to handle successful and invalid releases
+# Mostrar se ocorreram erros (opcional)
+# Adicione lógica adicional aplicável para lidar com releases bem-sucedidos e inválidos
 if [ $? -eq 0 ] ; then
-  echo "Release successful"
+  echo "Release bem-sucedido"
 else
-  echo "Release: **ERRORS** "
+  echo "Release: **ERROS** "
 fi
 ```
 
 
-## Tips
+## Dicas
 
-### Run Release Manually
+### Executar Release Manualmente
 
-Running the release manually can help catch errors quickly and fix them right where they occur. When using the right tools and techniques this can be done very quickly.
+Executar o release manualmente pode ajudar a detectar erros rapidamente e corrigi-los imediatamente. Ao usar as ferramentas e técnicas certas, isso pode ser feito muito rapidamente.
 
-Assumptions:
-- Using [Visual Studio Code](https://code.visualstudio.com/) (VSC) (or similar text editor)
-  - Terminal is set to `bash` (TODO: Link to cmder documentation for windows users)
-  - Shortcuts setup to quickly navigate between current file and terminal. In VSC `Preferences > Keyboard Shortcuts`: (*Windows users change `cmd` to `ctrl`*)
-    - Set: `View: Focus First Editor Group` to `cmd+1`
-    - Set: `Terminal: Focus Terminal` to `cmd+2`
-    - Now you can toggle between the editor and terminal window using `⌘+1` and `⌘+2`. This is critical to scroll through large files, copy from the editor, then past in the terminal (in a SQLcl session)
+Premissas:
+- Usando [Visual Studio Code](https://code.visualstudio.com/) (VSC) (ou editor de texto similar)
+  - Terminal configurado para `bash` (TODO: Link para documentação do cmder para usuários Windows)
+  - Atalhos configurados para navegar rapidamente entre o arquivo atual e o terminal. No VSC `Preferências > Atalhos de Teclado`: (*Usuários Windows: substituam `cmd` por `ctrl`*)
+    - Configure: `Exibir: Focalizar Primeiro Grupo de Editores` para `cmd+1`
+    - Configure: `Terminal: Focalizar Terminal` para `cmd+2`
+    - Agora você pode alternar entre o editor e a janela do terminal usando `Cmd+1` e `Cmd+2`. Isso é fundamental para percorrer arquivos grandes, copiar do editor e colar no terminal (em uma sessão SQLcl)
 
 
-Open the [Terminal window](https://code.visualstudio.com/docs/editor/integrated-terminal) (`Terminal > New Terminal`) and run:
+Abra a [janela do Terminal](https://code.visualstudio.com/docs/editor/integrated-terminal) (`Terminal > Novo Terminal`) e execute:
 
 ```bash
-cd <project directory>
+cd <diretório_do_projeto>
 
 cd release
-# Open _release.sql file in VSC
+# Abrir o arquivo _release.sql no VSC
 code _release.sql
 
-# Connect to DB
+# Conectar ao banco de dados
 source ../scripts/helper.sh
-$SQLCL <test_connection_string>
+$SQLCL <string_conexao_teste>
 ```
 
-Once this is done manually run through the sections in `_release.sql` and copy and paste each section(s) of code into the terminal as shown below. When/if the `_release.sql` contains files that are referenced in the `release/code` folder it's recommended you open those up manually and do the same thing (i.e. copy and paste).
+Uma vez feito isso, percorra manualmente as seções em `_release.sql` e copie e cole cada seção de código no terminal conforme mostrado abaixo. Quando o `_release.sql` contiver arquivos referenciados na pasta `release/code`, é recomendado abri-los manualmente e fazer o mesmo (ou seja, copiar e colar).
 
-![VSC-demo](../.vscode/img/vsc-manual-release.gif)
+![Demo-VSC](../.vscode/img/vsc-manual-release.gif)
+
+---
+
+> **Mantido por:** [@maxwbh](https://github.com/maxwbh) — Maxwell da Silva Oliveira — M&S do Brasil LTDA

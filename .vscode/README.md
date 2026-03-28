@@ -1,42 +1,46 @@
-# MS Visual Studio Code Build Tasks
+# Tarefas de Build do MS Visual Studio Code
 
-- [Setup](#setup)
+- [Configuração](#configuração)
   - [`tasks.json`](#tasksjson)
-- [Tasks](#tasks)
-  - [APEX Export](#apex-export)
-  - [Compiling Code](#compiling-code)
-  - [Generate Object](#generate-object)
+- [Tarefas](#tarefas)
+  - [Exportação APEX](#exportação-apex)
+  - [Compilação de Código](#compilação-de-código)
+  - [Gerar Objeto](#gerar-objeto)
 
-[Microsoft Visual Studio Code (VSC)](https://code.visualstudio.com/) is a code editor and is recommended for most PL/SQL work. VSC can compile PL/SQL code directly from VSC (see [this blog](https://ora-00001.blogspot.ca/2017/03/using-vs-code-for-plsql-development.html)) for more information. Opening this project folder in VSC will automatically give you the ability to compile PL/SQL code and do APEX backups
+O [Microsoft Visual Studio Code (VSC)](https://code.visualstudio.com/) é um editor de código recomendado para a maioria dos trabalhos com PL/SQL. O VSC pode compilar código PL/SQL diretamente (veja [este blog](https://ora-00001.blogspot.ca/2017/03/using-vs-code-for-plsql-development.html) para mais informações). Abrir a pasta deste projeto no VSC lhe dará automaticamente a capacidade de compilar código PL/SQL e fazer backups do APEX.
 
 
-## Setup
+## Configuração
 
-The first time you execute this script an error will be shown and `scripts/user-config.sh` will be created with some default values. Modify the variables as necessary. You may also need to modify the [`scripts/project-config.sh`](scripts/project-config.sh) file. See the documenation in the [`scripts`](scripts) folder for more info.
+Na primeira vez que você executar este script, um erro será exibido e o arquivo `scripts/user-config.sh` será criado com alguns valores padrão. Modifique as variáveis conforme necessário. Você também pode precisar modificar o arquivo [`scripts/project-config.sh`](scripts/project-config.sh). Veja a documentação na pasta [`scripts`](scripts) para mais informações.
 
-*Note: Windows users: Please ensure WSL or cmder is configured to run bash as terminal in VSC: [instructions](../README.md#windows-setup)*
+*Nota: Usuários Windows: Certifique-se de que o WSL ou cmder está configurado para executar bash como terminal no VSC: [instruções](../README.md#configuração-windows)*
 
 ### `tasks.json`
 
-This file defines the VSCode task. The first time that anything bash script is run in this template (ex: build, compile, apex export, etc) the task names will automatically be updated to reflect the root project's folder name.
+Este arquivo define as tarefas do VSCode. Na primeira vez que qualquer script bash for executado neste template (ex: build, compilação, exportação apex, etc.), os nomes das tarefas serão automaticamente atualizados para refletir o nome da pasta raiz do projeto.
 
-For example if the project is stored in `~/git/my-project` **after** the first bash script is run (see previous paragraph) the task names will look like: `compile: my-project` etc.
+Por exemplo, se o projeto estiver armazenado em `~/git/meu-projeto`, **após** a primeira execução do script bash (veja parágrafo anterior), os nomes das tarefas ficarão como: `compilar: meu-projeto` etc.
 
-## Tasks
+## Tarefas
 
-Tasks can be executed with `⌘+shift+B` and selecting the desired task.
+As tarefas podem ser executadas com `Ctrl+Shift+B` e selecionando a tarefa desejada.
 
-![Task Compile Demo](img/task-compile.gif)
+![Demo de Compilação de Tarefa](img/task-compile.gif)
 
-### APEX Export
+### Exportação APEX
 
-If you want to export your APEX applications (defined in `scripts/project-config.sh`) execute the `apex export: <project name>`
+Se você deseja exportar suas aplicações APEX (definidas em `scripts/project-config.sh`), execute a tarefa `exportar apex: <nome do projeto>`
 
-### Compiling Code
+### Compilação de Código
 
-To compile the current file you're editing execute the `compile: <project name>` task.
+Para compilar o arquivo que você está editando atualmente, execute a tarefa `compilar: <nome do projeto>`.
 
 
-### Generate Object
+### Gerar Objeto
 
-To quickly create a new package, view, or data file execute the `generate object: <project name>` task.
+Para criar rapidamente um novo package, view ou arquivo de dados, execute a tarefa `gerar objeto: <nome do projeto>`.
+
+---
+
+> **Mantido por:** [@maxwbh](https://github.com/maxwbh) — Maxwell da Silva Oliveira — M&S do Brasil LTDA

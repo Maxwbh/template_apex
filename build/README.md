@@ -1,19 +1,23 @@
-# Build Scripts
+# Scripts de Build
 
-This folder contains scripts to help build a release
+Esta pasta contém scripts para ajudar a construir um release.
 
-- [Build a Release](#build-a-release)
+- [Construir um Release](#construir-um-release)
 
-## Build a Release
+## Construir um Release
 
-To build a release simply run the command below. It is recommended that you build a release each time before running the release.
+Para construir um release, basta executar o comando abaixo. É recomendado que você construa um release cada vez antes de executá-lo.
 
 ```bash
-# Change "version" for your version number
-./build.sh version
+# Substitua "versao" pelo seu número de versão
+./build.sh versao
 ```
 
-This script does the following:
-- Scrapes the `views` and `packages` folder and generate `release/all_views.sql` and `release/all_packages.sql`
-- Generates a script to map some OS environment variables to SQL (`release/load_env_vars.sql`)
-- Generates the install commands for all the APEX applications and stores in `release/all_apex.sql`
+Este script faz o seguinte:
+- Varre as pastas `views` e `packages` e gera `release/all_views.sql` e `release/all_packages.sql`
+- Gera um script para mapear algumas variáveis de ambiente do SO para SQL (`release/load_env_vars.sql`)
+- Gera os comandos de instalação para todas as aplicações APEX e armazena em `release/all_apex.sql`
+
+---
+
+> **Mantido por:** [@maxwbh](https://github.com/maxwbh) — Maxwell da Silva Oliveira — M&S do Brasil LTDA

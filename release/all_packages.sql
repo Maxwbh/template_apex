@@ -1,5 +1,5 @@
--- GENERATED from build/build.sh DO NOT modify this file directly as all changes will be overwritten upon next build
--- Automated listing for packages
+-- GERADO pelo build/build.sh NÃO modifique este arquivo diretamente, pois todas as alterações serão sobrescritas no próximo build
+-- Listagem automática para packages
 prompt @../packages/*.pks
 @../packages/*.pks
 prompt @../packages/*.pkb

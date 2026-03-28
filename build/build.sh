@@ -1,34 +1,34 @@
 #!/bin/bash
 
-# ./build.sh <version>
-# Parameters
-#   version: This is embedded in the APEX application release.
+# ./build.sh <versão>
+# Parâmetros
+#   versão: Este valor é incorporado no release da aplicação APEX.
 
 if [ -z "$1" ]; then
-  echo 'Missing version number'
+  echo 'Número de versão ausente'
   exit 0
 fi
 
 VERSION=$1
 
-# This is the directory that this file is located in
+# Este é o diretório onde este arquivo está localizado
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-# echo "Start Dir: $SCRIPT_DIR\n"
+# echo "Diretório Inicial: $SCRIPT_DIR\n"
 
-# Load Helper and config
+# Carregar Helper e configuração
 source $SCRIPT_DIR/../scripts/helper.sh
 
 
-echo -e "*** Listing all views and packages ***\n"
+echo -e "*** Listando todas as views e packages ***\n"
 list_all_files views release/all_views.sql $EXT_VIEW
 list_all_files packages release/all_packages.sql $EXT_PACKAGE_SPEC,$EXT_PACKAGE_BODY
 
-# TODO #10 APEX Nitro configuration
-# echo -e "*** APEX Nitro Publish ***\n"
+# TODO #10 Configuração do APEX Nitro
+# echo -e "*** Publicação APEX Nitro ***\n"
 # apex-nitro publish gre
 
-# Export APEX applications, defined in project-config.sh
+# Exportar aplicações APEX, definidas em project-config.sh
 export_apex_app $VERSION
 
-# # Generate release support sql files 
+# Gerar arquivos SQL de suporte ao release
 gen_release_sql

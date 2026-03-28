@@ -1,9 +1,9 @@
--- Installs an APEX application
--- 
--- Parameters:
--- 1: Schema to install into
--- 2: Workspace to install into
--- 3: Application ID to run
+-- Instala uma aplicação APEX
+--
+-- Parâmetros:
+-- 1: Schema para instalar
+-- 2: Workspace para instalar
+-- 3: ID da Aplicação para executar
 
 set serveroutput on size unlimited;
 set timing off;

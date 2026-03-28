@@ -1,3 +1,3 @@
--- GENERATED from build/build.sh DO NOT modify this file.
-prompt *** APEX Installation ***
+-- GERADO pelo build/build.sh NÃO modifique este arquivo.
+prompt *** Instalação APEX ***
 prompt *** App: 4000161 ***

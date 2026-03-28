@@ -1,192 +1,191 @@
 # Scripts
 
-Files in this folder can be used for multiple purposes such as VSCode compilation, build scripts, etc
+Os arquivos nesta pasta podem ser usados para múltiplos propósitos, como compilação no VSCode, scripts de build, etc.
 
-- [Files](#files)
+- [Arquivos](#arquivos)
 - [`apex_disable.sql`](#apex_disablesql)
 - [`apex_export_app.sql`](#apex_export_appsql)
 - [`helper.sh`](#helpersh)
-  - [Environment Variables](#environment-variables)
-  - [Functions](#functions)
+  - [Variáveis de Ambiente](#variáveis-de-ambiente)
+  - [Funções](#funções)
     - [`export_apex_app`](#export_apex_app)
     - [`gen_object`](#gen_object)
     - [`list_all_files`](#list_all_files)
     - [`reset_release`](#reset_release)
-    - ['merge_sql_files`](#merge_sql_files)
+    - [`merge_sql_files`](#merge_sql_files)
 - [`project-config.sh`](#project-configsh)
 - [`user-config.sh`](#user-configsh)
 
-## Files
+## Arquivos
 
-**You will need to configure both `project-config.sh` and `user-config.sh` upon first use**
+**Você precisará configurar tanto `project-config.sh` quanto `user-config.sh` no primeiro uso**
 
-File | Description
+Arquivo | Descrição
 --- | ---
-[`apex_export_app.sql`](#apex_export_appsql) | Exports an APEX application
-[`helper.sh`](#helpersh) | Helper functions that all other scripts should call. Loads `config.sh`
-`project-config.sh` | Project configuration
-[`user-config.sh`](#user-configsh) | This file will be automatically generated when any bash script is run for the first time. It is self documenting.
+[`apex_export_app.sql`](#apex_export_appsql) | Exporta uma aplicação APEX
+[`helper.sh`](#helpersh) | Funções auxiliares que todos os outros scripts devem chamar. Carrega `config.sh`
+`project-config.sh` | Configuração do projeto
+[`user-config.sh`](#user-configsh) | Este arquivo será gerado automaticamente quando qualquer script bash for executado pela primeira vez. É auto-documentado.
 
 
 ## `apex_disable.sql`
 
-This script will disable (sets the application's status to Unavailable). It's main purpose is to disable the application at the start of a release so users don't use it while the schema is being upgraded. By default this is called in [`../release/_release.sql`].
+Este script desabilitará a aplicação (define o status como Indisponível). Seu principal propósito é desabilitar a aplicação no início de um release para que os usuários não a utilizem enquanto o schema está sendo atualizado. Por padrão, é chamado em [`../release/_release.sql`].
 
-**This script performs a `commit` at the end.**
+**Este script executa um `commit` ao final.**
 
-Parameter | Description
+Parâmetro | Descrição
 --- | ---
-`1` | Comma delimited list of application IDs
+`1` | Lista de IDs de aplicação separados por vírgula
 
-Example:
+Exemplo:
 
 ```bash
-echo exit | sqlcl martin/password123@localhost:32118/xe @apex_disable.sql 100,200
+echo exit | sqlcl usuario/senha123@localhost:32118/xe @apex_disable.sql 100,200
 ```
 
 
 
 ## `apex_export_app.sql`
 
-This script requires [SQLcl](https://www.oracle.com/ca-en/database/technologies/appdev/sqlcl.html)
+Este script requer [SQLcl](https://www.oracle.com/ca-en/database/technologies/appdev/sqlcl.html)
 
-Parameter | Description
+Parâmetro | Descrição
 --- | ---
-`1` | Application ID
-`2` | *Optional* APEX Export options (ex: `-split`)
+`1` | ID da Aplicação
+`2` | *Opcional* Opções de exportação APEX (ex: `-split`)
 
 
-Examples:
+Exemplos:
 
 ```bash
-# Export to f100.sql
-echo exit | sqlcl martin/password123@localhost:32118/xe @apex_export_app.sql 100
+# Exportar para f100.sql
+echo exit | sqlcl usuario/senha123@localhost:32118/xe @apex_export_app.sql 100
 
-# Export to Application 100 as split files
-echo exit | sqlcl martin/password123@localhost:32118/xe @apex_export_app.sql 100 -split
+# Exportar a Aplicação 100 como arquivos divididos
+echo exit | sqlcl usuario/senha123@localhost:32118/xe @apex_export_app.sql 100 -split
 ```
 
 
 ## `helper.sh`
 
-Documentation below references `project root folder`. This is the base folder that the git project is located on your computer. Ex: `/Users/martin/git/insum/starter-project-template/`
+A documentação abaixo referencia `pasta raiz do projeto`. Esta é a pasta base onde o projeto git está localizado no seu computador. Ex: `/Users/maxwell/git/template_apex/`
 
-To load the helper functions run: `source scripts/helper.sh` (*assuming you are in the project's root folder*). This will load some environment variables and load/verify configurations for this release.
+Para carregar as funções auxiliares execute: `source scripts/helper.sh` (*assumindo que você está na pasta raiz do projeto*). Isso carregará algumas variáveis de ambiente e carregará/verificará as configurações para este release.
 
-### Environment Variables
+### Variáveis de Ambiente
 
-Name | Description
+Nome | Descrição
 --- | ---
-`SCRIPT_DIR` | Directory that the helper file is located in. Using the example above this will return: `/Users/martin/git/insum/starter-project-template/scripts`
-`PROJECT_DIR` | Root directory of the git repo that is associated to this file. Ex: `/Users/martin/git/insum/starter-project-template/`
+`SCRIPT_DIR` | Diretório onde o arquivo helper está localizado. Usando o exemplo acima, retornará: `/Users/maxwell/git/template_apex/scripts`
+`PROJECT_DIR` | Diretório raiz do repositório git associado a este arquivo. Ex: `/Users/maxwell/git/template_apex/`
 
 
-### Functions
+### Funções
 
 #### `export_apex_app`
 
-Exports APEX applications and also splits the export file. APEX exports will be stored in `<project_root>/apex` folder. The list of applications to export is defined in `scripts/project-config.sh` variable `APEX_APP_IDS`
+Exporta aplicações APEX e também divide o arquivo de exportação. As exportações APEX serão armazenadas na pasta `<raiz_do_projeto>/apex`. A lista de aplicações a exportar é definida na variável `APEX_APP_IDS` em `scripts/project-config.sh`.
 
-**Parameters**
-Position | Required | Description
+**Parâmetros**
+Posição | Obrigatório | Descrição
 --- | --- | ---
-`$1` | Optional | Application version. If defined will search the exported application file for `%RELEASE_VERSION%` and replaced it with this variable. See the [`apex`](../apex/) documentation for more information.
+`$1` | Opcional | Versão da aplicação. Se definido, procurará no arquivo exportado da aplicação por `%RELEASE_VERSION%` e substituirá por esta variável. Veja a documentação em [`apex`](../apex/) para mais informações.
 
-**Example**
+**Exemplo**
 
 ```bash
-# No app version
+# Sem versão da aplicação
 export_apex_app
 
-# App version
+# Com versão da aplicação
 export_apex_app 1.2.3
 ```
 
 #### `gen_object`
 
-Generates a file based on template file.  (see example below for more description)
+Gera um arquivo baseado em um arquivo de template. (veja o exemplo abaixo para mais descrição)
 
-**Parameters**
-Position | Required | Description
+**Parâmetros**
+Posição | Obrigatório | Descrição
 --- | --- | ---
-`$1` | Required | Object type. By default this is `package, view, data`)
-`$2` | Required | Object name. Will be new file name along with replacing all reference of `CHANGEME` in file
+`$1` | Obrigatório | Tipo de objeto. Por padrão: `package, view, data`
+`$2` | Obrigatório | Nome do objeto. Será o nome do novo arquivo e substituirá todas as referências a `CHANGEME` no arquivo
 
+**Exemplo**
 
-**Example**
-
-Suppose you wanted to quickly create a new package (`pkg_emp`). By default in the [`templates`](../templates) folder there exists two files [`template_pkg.pks`](../templates/template_pkg.pks) and [`template_pkg.pkb`](../templates/template_pkg.pkb). In the past you'd need to copy these two files, rename them, then modify the `CHANGEME`s and replace with your package name. Now you can simply:
+Suponha que você queira criar rapidamente um novo package (`pkg_emp`). Por padrão, na pasta [`templates`](../templates) existem dois arquivos [`template_pkg.pks`](../templates/template_pkg.pks) e [`template_pkg.pkb`](../templates/template_pkg.pkb). Antes, você precisaria copiar esses dois arquivos, renomeá-los e modificar os `CHANGEME`s, substituindo pelo nome do seu package. Agora basta:
 
 ```bash
 source ./scripts/helper.sh
 gen_object package pkg_emp
 ```
 
-This will then automatically create two new files `packages/pkg_emp.pks` and `packages/pkg_emp.pkb`. In VSCode there's also a task for this to avoid any command line
+Isso criará automaticamente dois novos arquivos `packages/pkg_emp.pks` e `packages/pkg_emp.pkb`. No VSCode também existe uma tarefa para isso, evitando o uso da linha de comando.
 
-**Configuration**
+**Configuração**
 
-To modify the different types of available templates modify [`scripts/project-config.sh`](project-config.sh) and look for `OBJECT_FILE_TEMPLATE_MAP` (it is self documenting)
+Para modificar os diferentes tipos de templates disponíveis, modifique [`scripts/project-config.sh`](project-config.sh) e procure por `OBJECT_FILE_TEMPLATE_MAP` (é auto-documentado).
 
 #### `list_all_files`
 
-It is very rare that you'd need to run this function on it's own as it's called as part of the [`build`](../build) process. This function will list all the files in a folder and output the results with `@../` prefix in a specified output file. This is useful when wanting to automatically compile all packages and views as part of the build.
+É muito raro que você precise executar esta função sozinha, pois ela é chamada como parte do processo de [`build`](../build). Esta função listará todos os arquivos em uma pasta e gerará os resultados com o prefixo `@../` em um arquivo de saída especificado. Isso é útil para compilar automaticamente todos os packages e views durante o build.
 
-**Parameters**
-Position | Required | Description
+**Parâmetros**
+Posição | Obrigatório | Descrição
 --- | --- | ---
-`$1` | Required | Folder that you want to list files from. **Note:** this folder is the folder name **relative** to the project's root folder. I.e. for `views` you would specify `views` and **not** `/Users/martin/git/insum/starter-project-template/views`
-`$2` | Required | File to store results in
-`$3` | Optional | Comma delimited list of file extensions to search for. Default: `sql`. Note the order of the list matters. For example if `pks,pkb` all the `pks` (spec) files will be listed first then the `pkb` (body) files will be listed second.
+`$1` | Obrigatório | Pasta da qual listar os arquivos. **Nota:** esta pasta é o nome da pasta **relativa** à pasta raiz do projeto. Ou seja, para `views` você especificaria `views` e **não** `/Users/maxwell/git/template_apex/views`
+`$2` | Obrigatório | Arquivo para armazenar os resultados
+`$3` | Opcional | Lista de extensões de arquivo separadas por vírgula para buscar. Padrão: `sql`. Note que a ordem da lista importa. Por exemplo, se `pks,pkb`, todos os arquivos `pks` (spec) serão listados primeiro e depois os arquivos `pkb` (body).
 
-**Example**
+**Exemplo**
 ```bash
-# Generate all the views
+# Gerar todas as views
 list_all_files views release/all_views.sql sql
 
-# Generate all the packages
-# Note pks is before pkb so that the specs get listed before the body
+# Gerar todos os packages
+# Note que pks vem antes de pkb para que os specs sejam listados antes dos body
 list_all_files packages release/all_packages.sql pks,pkb
 ```
 
 #### `reset_release`
 
-Resets the project's root release folder. Because resetting will erase everything in the `release/code` folder and reset `release/code/_run_code.sql` this function requires that an additional parameter is passed in to ensure that nothing is deleted by mistake.
+Reseta a pasta de release raiz do projeto. Como o reset apagará tudo na pasta `release/code` e resetará `release/code/_run_code.sql`, esta função requer que um parâmetro adicional seja passado para garantir que nada seja excluído por engano.
 
-**Parameters**
-Position | Required | Description
+**Parâmetros**
+Posição | Obrigatório | Descrição
 --- | --- | ---
-`$1` | Required | project root directory name. If this root folder is `/Users/martin/git/insum/starter-project-template/` then this parameter will be `starter-project-template`
+`$1` | Obrigatório | Nome do diretório raiz do projeto. Se a pasta raiz é `/Users/maxwell/git/template_apex/`, então este parâmetro será `template_apex`
 
-**Example**
+**Exemplo**
 
 ```bash
-# Show what happens when no parameter is passed in
-# Note the error message will show what call to make
-reset_release 
+# Mostra o que acontece quando nenhum parâmetro é passado
+# Note que a mensagem de erro mostrará a chamada correta
+reset_release
 
-Error:  confirmation directory missing or not matching. Run: reset_release starter-project-template
+Erro: diretório de confirmação ausente ou não correspondente. Execute: reset_release template_apex
 
-# Correct run
+# Execução correta
 
-reset_release starter-project-template
+reset_release template_apex
 ```
 
 
-#### 'merge_sql_files`
+#### `merge_sql_files`
 
-Merges multiple files into a single file. This is useful when you can't reference multiple files easily in a release (ex: deploying to apex.oracle.com).
-This will keep any existing commands (ex `alter table, update, etc`) but will expand any line that starts with `@s`.
+Mescla múltiplos arquivos em um único arquivo. Isso é útil quando não é possível referenciar múltiplos arquivos facilmente em um release (ex: deploy no apex.oracle.com).
+Isso manterá quaisquer comandos existentes (ex: `alter table, update, etc.`) mas expandirá qualquer linha que comece com `@`.
 
-**Parameters**
-Position | Required | Description
+**Parâmetros**
+Posição | Obrigatório | Descrição
 --- | --- | ---
-`$1` | Required | "root" input file
-`$2` | Required | Output (merged) file
+`$1` | Obrigatório | Arquivo de entrada "raiz"
+`$2` | Obrigatório | Arquivo de saída (mesclado)
 
-**Example**
+**Exemplo**
 
-Suppose your file structure is as follows:
+Suponha que sua estrutura de arquivos seja a seguinte:
 
 ```
 /release
@@ -198,34 +197,38 @@ Suppose your file structure is as follows:
     @..packages.pkg_emp.pkb
 ```
 
-If you then run:
+Se você então executar:
 
 ```bash
 cd /release
 merge_sql_files _release.sql merged_release.sql
 ```
 
-It will then create `merged_release.sql` with the following:
+Isso criará `merged_release.sql` com o seguinte:
 ```sql
 -- _release.sql
 update config set release_date = sysdate;
--- 
--- referencing @all_packages.sql
--- 
--- referencing @..packages/pkg_emp.pks
--- 
+--
+-- referenciando @all_packages.sql
+--
+-- referenciando @..packages/pkg_emp.pks
+--
 create or replace package pkg_emp
 ...
--- 
--- referencing @..packages/pkg_emp.pkb
+--
+-- referenciando @..packages/pkg_emp.pkb
 create or replace package body pkg_emp
 ...
 ```
 
 ## `project-config.sh`
-This file contains information about your project (such as schema name, APEX applications, etc.). It is common for all developers and changes are saved in git. **Do not** put any sensitive information in this file (`user-config.sh` is for sensitive information).
+Este arquivo contém informações sobre o seu projeto (como nome do schema, aplicações APEX, etc.). É comum para todos os desenvolvedores e as alterações são salvas no git. **Não** coloque informações sensíveis neste arquivo (`user-config.sh` é para informações sensíveis).
 
 ## `user-config.sh`
-The first time you run any bash script an error will be displayed and a new file (`scripts/user-config.sh`) will be created. `user-config.sh` is self documented and requires some configuration before the build will work.
+Na primeira vez que qualquer script bash for executado, um erro será exibido e um novo arquivo (`scripts/user-config.sh`) será criado. `user-config.sh` é auto-documentado e requer alguma configuração antes que o build funcione.
 
-`user-config.sh` is in the `.gitignore` file so you can store more sensitive information without it being checked in.
+`user-config.sh` está no arquivo `.gitignore` para que você possa armazenar informações mais sensíveis sem que sejam commitadas.
+
+---
+
+> **Mantido por:** [@maxwbh](https://github.com/maxwbh) — Maxwell da Silva Oliveira — M&S do Brasil LTDA
