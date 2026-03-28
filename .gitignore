@@ -1,15 +1,34 @@
-# Folders
+# Pastas
 .DS_Store
 bin
 node_modules
 www/dist
 
+# Logs
 logs
 *.log
+
+# Mapas de código
 *.map
 /www/dist/css/app.css.map
+
+# Configuração APEX
 apexcl.config.json
 
+# Arquivos de backup gerados pelo sed
+*-bak
+*.sql-bak
 
-# Build - Ignore all config files
+# Arquivos temporários de editores
+*.swp
+*.swo
+*~
+.project
+.classpath
+.idea/
+
+# Arquivos mesclados gerados pelo build
+merged_*.sql
+
+# Build - Ignorar todos os arquivos de configuração do usuário
 scripts/user-config.sh

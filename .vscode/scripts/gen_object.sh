@@ -1,11 +1,11 @@
 #!/bin/bash
-# Env variables $1, $2, etc are from the tasks.json args array
+# Variáveis de ambiente $1, $2, etc. vêm do array args do tasks.json
 
-# Directory of this file
+# Diretório deste arquivo
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# Load helper
+# Carregar helper
 source $SCRIPT_DIR/../../scripts/helper.sh
 
-# Generate object
+# Gerar objeto
 gen_object $1  $2

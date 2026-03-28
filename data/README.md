@@ -1,8 +1,95 @@
-# Data
+# Dados
 
-This folder is for re-runnable data scripts. Re-runnable data scripts are most common for List of Value (LOV) / lookup tables. This allows developers to easily manage the LOV data rather than end users. It also prevents having to manually write updates each time one is required. It is recommended to name each file `data_table_name.sql`. When opening files in VSCode using the [Command Palette](https://code.visualstudio.com/docs/getstarted/tips-and-tricks#_quick-open) you can quickly find `data` scripts when using the Command Palette's [Quick Open](https://code.visualstudio.com/docs/getstarted/tips-and-tricks#_quick-open) feature. *Note: other modern text editors have similar functionality*
+> Scripts re-executaveis para tabelas de lookup, LOVs e dados iniciais (seed).
 
-*Note: If you have one-off data updates it should be part of a [release](../release/)*
+---
 
-A [template](../templates/template_data.sql) is provided for data scripts. It uses a `merge` concept that joins LOV values on codes. By joining on codes rather than IDs it removes any differences in sequences that may occur across environments.
+## Inicio Rapido
 
+```bash
+source scripts/helper.sh
+
+# Criar script usando template de array
+gen_object data_array data_status_pedido
+# -> data/data_status_pedido.sql
+
+# Criar script usando template JSON
+gen_object data_json data_categorias
+# -> data/data_categorias.sql
+```
+
+---
+
+## Como funciona
+
+- Cada arquivo usa `MERGE` para ser **re-executavel** com seguranca
+- A associacao e feita por **codigo** (nao por ID), evitando problemas entre ambientes
+- Nomenclatura recomendada: `data_<nome_tabela>.sql`
+
+---
+
+## Exemplo Pratico
+
+```sql
+-- data/data_status_pedido.sql
+set define off;
+
+PROMPT Dados de status_pedido
+
+declare
+  type rec_data is varray(3) of varchar2(4000);
+  type tab_data is table of rec_data index by pls_integer;
+  l_data tab_data;
+begin
+  -- 1: code  2: descricao  3: sequencia
+  l_data(l_data.count + 1) := rec_data('PENDENTE',  'Pendente',  1);
+  l_data(l_data.count + 1) := rec_data('APROVADO',  'Aprovado',  2);
+  l_data(l_data.count + 1) := rec_data('ENVIADO',   'Enviado',   3);
+  l_data(l_data.count + 1) := rec_data('ENTREGUE',  'Entregue',  4);
+  l_data(l_data.count + 1) := rec_data('CANCELADO', 'Cancelado', 5);
+
+  for i in 1..l_data.count loop
+    merge into status_pedido dest
+      using (select l_data(i)(1) as code from dual) src
+      on (dest.status_code = src.code)
+    when matched then
+      update set dest.descricao = l_data(i)(2),
+                 dest.sequencia = l_data(i)(3)
+    when not matched then
+      insert (status_code, descricao, sequencia, created_on, created_by)
+      values (l_data(i)(1), l_data(i)(2), l_data(i)(3),
+              current_timestamp, 'SYSTEM');
+  end loop;
+end;
+/
+```
+
+---
+
+## Registrar no release
+
+Adicione seus scripts manualmente em [`release/all_data.sql`](../release/all_data.sql):
+
+```sql
+-- release/all_data.sql
+@../data/data_status_pedido.sql
+@../data/data_categorias.sql
+@../data/data_tipos_pagamento.sql
+```
+
+> **Ordem importa!** Scripts com dependencias devem vir depois.
+
+---
+
+## Quando usar cada template
+
+| Template | Melhor para | Tamanho |
+|:--|:--|:--|
+| `data_array` | Poucos registros, dados simples | Pequeno (< 50 linhas) |
+| `data_json` | Muitos registros, dados complexos | Grande (> 50 linhas) |
+
+> **Nota:** Atualizacoes pontuais de dados (nao re-executaveis) devem ir em [`release/code/`](../release/code/).
+
+---
+
+<sub>Mantido por <a href="https://github.com/maxwbh">@maxwbh</a> — Maxwell da Silva Oliveira — M&S do Brasil LTDA</sub>

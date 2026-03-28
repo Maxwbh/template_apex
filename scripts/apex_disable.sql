@@ -1,12 +1,12 @@
--- Disables comma delimited list of APEX applications
--- This is primarily used at the start of an APEX release process
--- Commit is applied at the end of this file. If not then the app won't be disabled for end users
--- 
--- Parameters
--- 1: Comma delimited list of application IDs. Ex: 100,200
--- 
--- 
-prompt Disable APEX Application(s)
+-- Desabilita lista separada por vírgula de aplicações APEX
+-- Usado principalmente no início de um processo de release APEX
+-- Um commit é aplicado ao final deste arquivo. Se não for feito, a aplicação não será desabilitada para os usuários finais
+--
+-- Parâmetros
+-- 1: Lista separada por vírgula de IDs de aplicação. Ex: 100,200
+--
+--
+prompt Desabilitando Aplicação(ões) APEX
 declare
   c_app_ids constant varchar2(500) := '&1.';
   c_username constant varchar2(30) := user;
@@ -15,10 +15,10 @@ declare
 begin
   l_apex_app_ids := apex_string.split(p_str => c_app_ids, p_sep => ',');
 
-  -- Note if getting error "ORA_20987 to catch the error: ORA-20987: APEX - An API call has been prohibited."
-  -- Change your Application Security Settings
-  -- Shared Components > Security Attributes > Runtime API Usage: 
-  --  - Check "Modify This Application"
+  -- Nota: se receber o erro "ORA_20987 para capturar o erro: ORA-20987: APEX - Uma chamada de API foi proibida."
+  -- Altere as Configurações de Segurança da Aplicação
+  -- Componentes Compartilhados > Atributos de Segurança > Uso de API em Tempo de Execução:
+  --  - Marque "Modificar Esta Aplicação"
 
   for i in l_apex_app_ids.first .. l_apex_app_ids.last loop
 
@@ -30,13 +30,13 @@ begin
     apex_util.set_application_status(
       p_application_id => l_apex_app_ids(i) ,
       p_application_status => 'UNAVAILABLE',
-      p_unavailable_value => 'Scheduled update of application.');
+      p_unavailable_value => 'Atualização programada da aplicação.');
 
-    -- See https://github.com/insum-labs/starter-project-template/issues/28 for full description
-    apex_session.detach; 
+    -- Veja https://github.com/insum-labs/starter-project-template/issues/28 para descrição completa
+    apex_session.detach;
 
   end loop;
 
-  commit; -- Commit required to ensure the disabling of application is applied
+  commit; -- Commit necessário para garantir que a desabilitação da aplicação seja aplicada
 end;
 /
