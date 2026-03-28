@@ -4,15 +4,15 @@ create or replace package body CHANGEME as
 
 
   /**
-   * Description
+   * Descrição
    *
    *
    * @example
    *
    * @issue TODO
    *
-   * @author TODO 
-   * @created TODO 
+   * @author @maxwbh
+   * @created TODO
    * @param TODO
    * @return
    */
@@ -24,16 +24,16 @@ create or replace package body CHANGEME as
 
   begin
     logger.append_param(l_params, 'p_param1_todo', p_param1_todo);
-    logger.log('START', l_scope, null, l_params);
+    logger.log('INICIO', l_scope, null, l_params);
 
     ...
-    -- All calls to logger should pass in the scope
+    -- Todas as chamadas ao logger devem passar o scope
     ...
 
-    logger.log('END', l_scope);
+    logger.log('FIM', l_scope);
   exception
     when others then
-      logger.log_error('Unhandled Exception', l_scope, null, l_params);
+      logger.log_error('Exceção não tratada', l_scope, null, l_params);
       raise;
   end P_CHANGEME;
 

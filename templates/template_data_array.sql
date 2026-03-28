@@ -1,6 +1,6 @@
 set define off;
 
-PROMPT CHANGE_ME data
+PROMPT Dados de CHANGE_ME
 
 declare
   type rec_data is varray(3) of varchar2(4000);
@@ -9,7 +9,7 @@ declare
   l_row CHANGE_ME%rowtype;
 begin
 
-  -- Column order:
+  -- Ordem das colunas:
   -- CHANGEME
   -- 1: CHANGE_ME_code
   -- 2: CHANGE_ME_name
@@ -36,8 +36,8 @@ begin
     when matched then
       update
         set
-          -- Don't update the value as it's probably a key/secure value
-          -- Deletions are handled above
+          -- Não atualizar o valor pois provavelmente é uma chave/valor seguro
+          -- Exclusões são tratadas acima
           dest.CHANGE_ME_name = l_row.CHANGE_ME_name,
           dest.CHANGE_ME_seq = l_row.CHANGE_ME_seq
     when not matched then

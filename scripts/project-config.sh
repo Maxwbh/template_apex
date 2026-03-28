@@ -1,30 +1,30 @@
 #!/bin/bash
 
-# Name of Schema
+# Nome do Schema
 SCHEMA_NAME=CHANGE_ME
-# Name of default workspace that applications are associated with
+# Nome do workspace padrão ao qual as aplicações estão associadas
 APEX_WORKSPACE=CHANGE_ME
-# Comma delimited list of APEX Applications to export. Ex: 100,200
+# Lista separada por vírgula de Aplicações APEX para exportar. Ex: 100,200
 APEX_APP_IDS=CHANGE_ME
 
 
-# File extensions
-# Will be used throughought the scripts to generate lists of packages, views, etc from the filesystem
+# Extensões de arquivo
+# Serão usadas em todos os scripts para gerar listas de packages, views, etc. a partir do sistema de arquivos
 EXT_PACKAGE_SPEC=pks
 EXT_PACKAGE_BODY=pkb
 EXT_VIEW=sql
 
 
-# File Mappings
-# This will be used in VSCode to allow for quick generate of a given file based on template data
-# Format:
-# <name>:<template_file prefix (no extension)>:<file extensions (; delimited)>:<destination directory>
-# 
-# Definitions:
-# - name: Name that will be mapped to VSCode task
-# - template file: Template file prefix to use (no extension)
-# - file extensions: ";" delimited list of file extensions to reference each template file
-# - destination directory: where to store the new file
+# Mapeamento de arquivos
+# Será usado no VSCode para permitir a geração rápida de um arquivo baseado em dados de template
+# Formato:
+# <nome>:<prefixo_arquivo_template (sem extensão)>:<extensões de arquivo (; delimitado)>:<diretório destino>
+#
+# Definições:
+# - nome: Nome que será mapeado para a tarefa do VSCode
+# - arquivo de template: Prefixo do arquivo de template a usar (sem extensão)
+# - extensões de arquivo: Lista delimitada por ";" de extensões de arquivo para referenciar cada arquivo de template
+# - diretório destino: onde armazenar o novo arquivo
 OBJECT_FILE_TEMPLATE_MAP=""
 OBJECT_FILE_TEMPLATE_MAP="$OBJECT_FILE_TEMPLATE_MAP,package:templates/template_pkg:$EXT_PACKAGE_SPEC;$EXT_PACKAGE_BODY:packages"
 OBJECT_FILE_TEMPLATE_MAP="$OBJECT_FILE_TEMPLATE_MAP,view:templates/template_view:$EXT_VIEW:views"

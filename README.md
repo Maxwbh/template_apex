@@ -1,119 +1,127 @@
 
-# Starter Project Template
+# Template de Projeto Inicial para Oracle APEX
 
-[Template for Oracle PL/SQL and/or APEX development](https://github.com/insum-labs/starter-project-template) projects. This template provides scripts and processes to help speed up your development simplify some of your release processes.
+[Template para desenvolvimento Oracle PL/SQL e/ou APEX](https://github.com/maxwbh/template_apex) — projetos mantidos por [@maxwbh](https://github.com/maxwbh) (Maxwell da Silva Oliveira — M&S do Brasil LTDA). Este template fornece scripts e processos para acelerar o desenvolvimento e simplificar os processos de release.
 
-It's **important** to note this is a **template**. If something doesn't fit your project's need or additional changes are required adjust accordingly. All the included tools are meant to help provide results quickly. If your project doesn't need them, remove them.
+É **importante** notar que este é um **template**. Se algo não atender às necessidades do seu projeto ou mudanças adicionais forem necessárias, ajuste conforme necessário. Todas as ferramentas incluídas visam fornecer resultados rapidamente. Se o seu projeto não precisar delas, remova-as.
 
-- [Start](#start)
-- [Overview](#overview)
-- [Setup](#setup)
-- [Folder Structure](#folder-structure)
-- [Other Info](#other-info)
+- [Início](#início)
+- [Visão Geral](#visão-geral)
+- [Configuração](#configuração)
+- [Estrutura de Pastas](#estrutura-de-pastas)
+- [Outras Informações](#outras-informações)
   - [Git](#git)
-  - [Git Workflows](#git-workflows)
-  - [Windows Setup](#windows-setup)
-    - [cmder setup](#cmder-setup)
+  - [Fluxos de Trabalho Git](#fluxos-de-trabalho-git)
+  - [Configuração Windows](#configuração-windows)
+    - [Configuração do cmder](#configuração-do-cmder)
 
-## Start
+## Início
 
-In Github simply click the [`Use this template`](https://github.com/insum-labs/starter-project-template/generate) button. 
+No Github, basta clicar no botão [`Usar este template`](https://github.com/maxwbh/template_apex/generate).
 
-If using another git platform, start a new project (`git init`) then [**download**](https://github.com/insum-labs/starter-project-template/archive/master.zip) this project (*do not clone or fork*) and unzip into your new project. When copying it's important to copy all hidden files and folders. Example copy command: `cp -r ~/Downloads/starter-project-template-master/. ~/git/my-project`.
-
-
-## Overview
-
-This template contains a lot of features that may help with your project.
-
-- [Build](build/): Scripts to generate the release
-- [Folders](#folder-structure): The most common project folder structure is provided with this project.
-- [Release](release/): Framework to build and do releases.
-- [Visual Studio Code](https://code.visualstudio.com/) (VSC) integration: compile or run your SQL and PL/SQL code right from VSC. More details are provided in the [`.vscode`](.vscode/) folder.
-
-Once [configured](#setup) the high level process to leverage this template is as follows:
-
-- **Develop**
-  - Packages go in [`packages`](packages/), views go into [`views`](views/), etc
-  - Release specific / non re-runnable code goes into the [`release/code`](release/code) folder (see the [`release`](release) folder for more info on how to name files and list them in your release)
-    - Each release will start at exactly the same point: [`release/_release.sql`](release/_release.sql). If automating your releases this provides a consistent script to run which can reduce any manual intervention.
-- **Build Release**
-  - Once ready to promote your code run `./build/build.sh <version>`. This will do things such as export your APEX application(s), scrape the views/packages folder for all the files, etc.
-    - More information about the build process is available in the [`build`](build/) folder
-- **Run Release**
-  - They're various approaches on how to approach a release and tag your code. You need to read through the [release](release/) guidelines to chose an approach that is best for you
-- **Clean up Release**
-  - Once a release is done you "clear" the release specific code (i.e. `release/code` folder will be cleared and reset). A bash script [`reset_release`](scripts/#reset_release) is provided to do this automatically. Examples can be found in the [`release`](release/) folder.
-
-## Setup
-
-- [`scripts/project-config.sh`](scripts/project-config.sh): Configure APEX settings
-- [`scripts/user-config.sh`](scripts/user-config.sh): The first time any bash script is executed this file will be generated and needs to be modified with user specific settings. By default this file will not be committed to your git repo as it contains user specific settings and database passwords
-- Remove directories that don't apply to your project (ie. data, templates, etc...)
+Se estiver usando outra plataforma git, inicie um novo projeto (`git init`) e então [**baixe**](https://github.com/maxwbh/template_apex/archive/main.zip) este projeto (*não clone nem faça fork*) e descompacte no seu novo projeto. Ao copiar, é importante copiar todos os arquivos e pastas ocultos. Exemplo de comando: `cp -r ~/Downloads/template_apex-main/. ~/git/meu-projeto`.
 
 
-## Folder Structure
+## Visão Geral
 
-The default folder structure (listed below) provides a set of common folders most projects will use. You're encouraged to add new folders to your projects where necessary. For example if you have ORDS scripts you may want to create a root folder called `ords` to store them.
+Este template contém diversas funcionalidades que podem ajudar no seu projeto.
 
-| Folder | Description |
+- [Build](build/): Scripts para gerar o release
+- [Pastas](#estrutura-de-pastas): A estrutura de pastas mais comum para projetos é fornecida neste template.
+- [Release](release/): Framework para construir e executar releases.
+- Integração com [Visual Studio Code](https://code.visualstudio.com/) (VSC): compile ou execute seu código SQL e PL/SQL diretamente do VSC. Mais detalhes na pasta [`.vscode`](.vscode/).
+
+Uma vez [configurado](#configuração), o processo de alto nível para utilizar este template é o seguinte:
+
+- **Desenvolver**
+  - Packages vão em [`packages`](packages/), views vão em [`views`](views/), etc
+  - Código específico de release / não re-executável vai na pasta [`release/code`](release/code) (veja a pasta [`release`](release) para mais informações sobre como nomear arquivos e listá-los no seu release)
+    - Cada release começará exatamente no mesmo ponto: [`release/_release.sql`](release/_release.sql). Se automatizar seus releases, isso fornece um script consistente para executar, reduzindo qualquer intervenção manual.
+- **Construir Release**
+  - Quando estiver pronto para promover seu código, execute `./build/build.sh <versão>`. Isso fará coisas como exportar sua(s) aplicação(ões) APEX, varrer as pastas views/packages buscando todos os arquivos, etc.
+    - Mais informações sobre o processo de build estão disponíveis na pasta [`build`](build/)
+- **Executar Release**
+  - Existem várias abordagens sobre como realizar um release e marcar (tag) seu código. Você precisa ler as diretrizes de [release](release/) para escolher a abordagem mais adequada para você
+- **Limpar Release**
+  - Uma vez que um release é concluído, você "limpa" o código específico do release (ou seja, a pasta `release/code` será limpa e resetada). Um script bash [`reset_release`](scripts/#reset_release) é fornecido para isso automaticamente. Exemplos podem ser encontrados na pasta [`release`](release/).
+
+## Configuração
+
+- [`scripts/project-config.sh`](scripts/project-config.sh): Configure as definições do APEX
+- [`scripts/user-config.sh`](scripts/user-config.sh): Na primeira vez que qualquer script bash for executado, este arquivo será gerado e precisa ser modificado com as configurações específicas do usuário. Por padrão, este arquivo não será commitado no seu repositório git, pois contém configurações específicas do usuário e senhas de banco de dados
+- Remova diretórios que não se aplicam ao seu projeto (ex: data, templates, etc...)
+
+
+## Estrutura de Pastas
+
+A estrutura de pastas padrão (listada abaixo) fornece um conjunto de pastas comuns que a maioria dos projetos utilizará. Sinta-se à vontade para adicionar novas pastas ao seu projeto quando necessário. Por exemplo, se você tiver scripts ORDS, pode criar uma pasta raiz chamada `ords` para armazená-los.
+
+| Pasta | Descrição |
 |:--|--|
-| [`.vscode`](.vscode/) | [Visual Studio Code](https://code.visualstudio.com/) specific settings
-| [`apex`](apex/) | Application exports
-| [`data`](data/) | Conversion and seed data scripts
-| docs | Project documents 
-| lib | Installation libraries ([OOS Utils](https://github.com/OraOpenSource/oos-utils), [Logger](https://github.com/OraOpenSource/Logger), etc..)
-| [`release`](release/) | Current release scripts for changes and patching. Documentation is provided on various ways to do releases.
-| [`scripts`](scripts/) | Usually re-runable scripts referenced by a release script
-| packages | Packages (`.pks` & `.pkb`), (*If you have triggers, stand alone procedures or functions it's recommend to create a new folder for them*)
-| synonyms | Application Synonyms
-| triggers | Application Triggers
-| views | Application views
-| www | Assets that go in the server: images, CSS, and JavaScript
+| [`.vscode`](.vscode/) | Configurações específicas do [Visual Studio Code](https://code.visualstudio.com/)
+| [`apex`](apex/) | Exportações de aplicações
+| [`data`](data/) | Scripts de conversão e dados iniciais (seed)
+| docs | Documentos do projeto
+| lib | Bibliotecas de instalação ([OOS Utils](https://github.com/OraOpenSource/oos-utils), [Logger](https://github.com/OraOpenSource/Logger), etc..)
+| [`release`](release/) | Scripts do release atual para alterações e correções. Documentação é fornecida sobre várias formas de realizar releases.
+| [`scripts`](scripts/) | Scripts geralmente re-executáveis referenciados por um script de release
+| packages | Packages (`.pks` & `.pkb`), (*Se você tiver triggers, procedures ou functions standalone, é recomendado criar uma nova pasta para eles*)
+| synonyms | Sinônimos da aplicação
+| triggers | Triggers da aplicação
+| views | Views da aplicação
+| www | Assets do servidor: imagens, CSS e JavaScript
 
 
 
-## Other Info
+## Outras Informações
 
 ### Git
 
-If you're new to git check out these resources to help learn more about it:
+Se você é novo no git, confira estes recursos para aprender mais:
 
-- [Visualized Git Commands](https://dev.to/lydiahallie/cs-visualized-useful-git-commands-37p1)
+- [Comandos Git Visualizados](https://dev.to/lydiahallie/cs-visualized-useful-git-commands-37p1)
 
-### Git Workflows
+### Fluxos de Trabalho Git
 
-They're several concepts of how to manage your Git projects. I.e. is your active development done in the `master` branch or in a `develop` branch? Each concept has their pros and cons and we recommend you review and understand the differences to apply the best method for your project. The most popular workflows are:
+Existem vários conceitos sobre como gerenciar seus projetos Git. Ou seja, o desenvolvimento ativo é feito na branch `master` ou em uma branch `develop`? Cada conceito tem seus prós e contras, e recomendamos que você revise e entenda as diferenças para aplicar o melhor método ao seu projeto. Os fluxos de trabalho mais populares são:
 
 - [`git-flow`](https://www.git-tower.com/learn/git/ebook/en/command-line/advanced-topics/git-flow)
 - [GitLab flow](https://docs.gitlab.com/ee/topics/gitlab_flow.html)
-  - This is a super set of `git-flow` and contains GitLab specific features to help if using [GitLab](https://gitlab.com/)
-  - Document provides a great comparison of all the different workflow models
+  - Este é um superconjunto do `git-flow` e contém funcionalidades específicas do GitLab para ajudar se você estiver usando [GitLab](https://gitlab.com/)
+  - O documento fornece uma ótima comparação de todos os diferentes modelos de fluxo de trabalho
 - [GitHub Flow](https://guides.github.com/introduction/flow/)
-  - *Note in the GitLab flow document there's comment on GitHub flow is not recommended unless you deploy to prod frequently. For Oracle projects this comment can usually be ignored*
+  - *Nota: no documento do GitLab flow há um comentário dizendo que o GitHub flow não é recomendado a menos que você faça deploy em produção frequentemente. Para projetos Oracle, este comentário pode geralmente ser ignorado*
 
-Given the simplicity of [GitHub Flow](https://guides.github.com/introduction/flow/) we recommend this concept for most projects.
+Dada a simplicidade do [GitHub Flow](https://guides.github.com/introduction/flow/), recomendamos este conceito para a maioria dos projetos.
 
 
-### Windows Setup
+### Configuração Windows
 
-All the scripts provided in this started template are written in bash for Linux (and macOS) environments. Windows users have several options. They can install [Windows Subsystem for Linux](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux)(WSL) to run Linux in Windows. 
+Todos os scripts fornecidos neste template inicial são escritos em bash para ambientes Linux (e macOS). Usuários Windows têm várias opções. Podem instalar o [Windows Subsystem for Linux](https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux) (WSL) para executar Linux no Windows.
 
-Alternatively users can install [cmder](https://cmder.net/) which is a Linux emulator for Windows. 
+Alternativamente, os usuários podem instalar o [cmder](https://cmder.net/), que é um emulador Linux para Windows.
 
-#### cmder setup
+#### Configuração do cmder
 
-To setup cmder [download](https://cmder.net/) the latest version. Unzip and place the folder `cmder` into `c:\`. *Note: cmder can be stored anywhere. For the purpose of these instructions its assumed that it's stored in `c:\cmder`*.
+Para configurar o cmder, [baixe](https://cmder.net/) a versão mais recente. Descompacte e coloque a pasta `cmder` em `c:\`. *Nota: o cmder pode ser armazenado em qualquer lugar. Para fins destas instruções, assume-se que está em `c:\cmder`*.
 
-You can launch cmder anytime by running `c:\cmder\Cmder.exe` (*Hint: the first time you run it pin to your taskbar for quick access*)
+Você pode iniciar o cmder a qualquer momento executando `c:\cmder\Cmder.exe` (*Dica: na primeira vez que executar, fixe na barra de tarefas para acesso rápido*)
 
-To integrate with VSCode:
+Para integrar com o VSCode:
 
-- `File > Preferences > Settings`
-- Search for `terminal integrated shell`
-  - In the results you'll find a link to `Terminal > Integrated > Automation Shell: Windows` and a link to `Edit in settings.json`. Click the edit link and add the following to `settings.json`:
+- `Arquivo > Preferências > Configurações`
+- Pesquise por `terminal integrated shell`
+  - Nos resultados, você encontrará um link para `Terminal > Integrated > Automation Shell: Windows` e um link para `Editar em settings.json`. Clique no link de edição e adicione o seguinte ao `settings.json`:
 
 ```json
   "terminal.integrated.shell.windows": "C:\\cmder\\vendor\\git-for-windows\\bin\\bash.exe",
   "terminal.integrated.automationShell.linux": ""
 ```
+
+---
+
+> **Mantido por:** [@maxwbh](https://github.com/maxwbh) — Maxwell da Silva Oliveira — M&S do Brasil LTDA
+>
+> **Diretrizes:** Consulte os READMEs de cada subpasta para informações detalhadas sobre cada componente. Este template segue as melhores práticas de desenvolvimento Oracle APEX/PL-SQL.
+>
+> Baseado no [Starter Project Template](https://github.com/insum-labs/starter-project-template) da InSum Labs — Licença CC0 1.0 Universal (Domínio Público).

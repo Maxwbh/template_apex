@@ -1,4 +1,4 @@
-# Folders
+# Pastas
 .DS_Store
 bin
 node_modules
@@ -11,5 +11,5 @@ logs
 apexcl.config.json
 
 
-# Build - Ignore all config files
+# Build - Ignorar todos os arquivos de configuração do usuário
 scripts/user-config.sh

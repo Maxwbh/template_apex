@@ -1,3 +1,3 @@
--- This file must be manually modified as order matters when creating data records
--- Data files are re-runnable data scripts
--- ex: @../data/data_my_table.sql
+-- Este arquivo deve ser modificado manualmente, pois a ordem importa ao criar registros de dados
+-- Arquivos de dados são scripts re-executáveis
+-- ex: @../data/data_minha_tabela.sql

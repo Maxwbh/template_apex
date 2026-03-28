@@ -17,8 +17,8 @@ create table change_me (
   updated_by varchar2(255 byte)
 );
 
-comment on table change_me is 'CHANGEME';
-comment on column change_me.CHANGEME is 'CHANGEME';
+comment on table change_me is 'ALTERE_AQUI';
+comment on column change_me.CHANGEME is 'ALTERE_AQUI';
 
 alter table change_me add constraint change_me_pk primary key (change_me_id);
 

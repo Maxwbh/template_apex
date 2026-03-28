@@ -1,25 +1,26 @@
 {
-  "name": "apex-starter",
+  "name": "template-apex",
   "version": "1.0.0",
-  "description": "apex starter project template",
+  "description": "Template de projeto inicial para Oracle APEX - Mantido por @maxwbh (M&S do Brasil LTDA)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Erro: nenhum teste especificado\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/insumsolutions/internal_insum/project-templates/apex-starter-project-template.git"
+    "url": "git+https://github.com/maxwbh/template_apex.git"
   },
   "keywords": [
     "apex",
-    "starter",
-    "project",
-    "template"
+    "oracle",
+    "plsql",
+    "template",
+    "projeto"
   ],
-  "author": "Gino Suarez",
-  "license": "ISC",
+  "author": "maxwbh - Maxwell da Silva Oliveira (M&S do Brasil LTDA)",
+  "license": "CC0-1.0",
   "bugs": {
-    "url": "https://gitlab.com/insumsolutions/internal_insum/project-templates/apex-starter-project-template/issues"
+    "url": "https://github.com/maxwbh/template_apex/issues"
   },
-  "homepage": "https://gitlab.com/insumsolutions/internal_insum/project-templates/apex-starter-project-template#readme"
+  "homepage": "https://github.com/maxwbh/template_apex#readme"
 }

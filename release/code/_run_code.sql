@@ -1,4 +1,4 @@
--- Release specific references to files in this folder
--- This file is automatically executed from the /release/_release.sql file
--- 
--- Ex: @code/issue-123.sql 
+-- Referências específicas do release para arquivos nesta pasta
+-- Este arquivo é executado automaticamente a partir do arquivo /release/_release.sql
+--
+-- Ex: @code/issue-123.sql

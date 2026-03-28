@@ -1,12 +1,12 @@
 set define off;
 
-PROMPT CHANGE_ME data
+PROMPT Dados de CHANGE_ME
 
 declare
   l_json clob;
 begin
 
-  -- Load data in JSON object
+  -- Carregar dados no objeto JSON
   l_json := q'!
 [
   {
@@ -26,9 +26,9 @@ begin
       CHANGE_ME_seq number path '$.CHANGE_ME_seq'
     )
   ) loop
-    
-    -- Note: looping over each entry to make it easier to debug in case one entry is invalid
-    -- If performance is an issue can move the loop's select statement into the merge statement
+
+    -- Nota: iterando sobre cada entrada para facilitar a depuração caso uma entrada seja inválida
+    -- Se performance for um problema, pode mover o select do loop para dentro da instrução merge
     merge into CHANGE_ME dest
       using (
         select
@@ -41,8 +41,8 @@ begin
     when matched then
       update
         set
-          -- Don't update the value as it's probably a key/secure value
-          -- Deletions are handled above
+          -- Não atualizar o valor pois provavelmente é uma chave/valor seguro
+          -- Exclusões são tratadas acima
           dest.CHANGE_ME_name = data.CHANGE_ME_name,
           dest.CHANGE_ME_seq = data.CHANGE_ME_seq
     when not matched then
