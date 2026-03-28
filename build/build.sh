@@ -6,7 +6,7 @@
 
 if [ -z "$1" ]; then
   echo 'Número de versão ausente'
-  exit 0
+  exit 1
 fi
 
 VERSION=$1

@@ -9,10 +9,12 @@ Se estiver usando o VSCode, você pode mover estes templates para a pasta [`.vsc
 
 Arquivo | Descrição
 --- | ---
-`template_data.sql` | Para scripts de dados re-executáveis (geralmente para tabelas de lookup).
+`template_data_array.sql` | Para scripts de dados re-executáveis usando arrays PL/SQL (geralmente para tabelas de lookup).
+`template_data_json.sql` | Para scripts de dados re-executáveis usando JSON (ideal para datasets maiores).
 `template_pkg.pkb` | Template de package body e procedure/function
 `template_pkg.pks` | Package spec
 `template_table.sql` | Criação de tabela. *Nota: é esperado que este arquivo seja alterado para cada projeto, pois padrões de nomenclatura diferem*
+`template_view.sql` | Criação de view
 
 ---
 

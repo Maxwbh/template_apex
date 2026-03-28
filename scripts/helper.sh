@@ -127,13 +127,13 @@ export_apex_app(){
 
   local APEX_APP_VERSION=$1
 
-  for APEX_APP_ID in $(echo $APEX_APP_IDS | sed "s/,/ /g")
+  for APEX_APP_ID in $(echo "$APEX_APP_IDS" | sed "s/,/ /g")
   do
     echo "Exportação APEX: $APEX_APP_ID"
 
     # Exportar arquivo único da aplicação
     # É necessário iniciar no diretório raiz do projeto, pois a exportação armazenará automaticamente os arquivos na pasta apex
-    cd $PROJECT_DIR
+    cd "$PROJECT_DIR"
     echo "PROJECT_DIR=$PROJECT_DIR"
 
     echo exit | $SQLCL $DB_CONN @scripts/apex_export.sql $APEX_APP_ID
@@ -145,7 +145,7 @@ export_apex_app(){
       echo "APEX_APP_VERSION: $APEX_APP_VERSION detectada, injetando na aplicação APEX"
       echo "APEX_APP_ID=$APEX_APP_ID"
 
-      sed - i-bak "s/%RELEASE_VERSION%/$VERSION/" apex/f$APEX_APP_ID.sql
+      sed -i-bak "s/%RELEASE_VERSION%/$VERSION/" "apex/f$APEX_APP_ID.sql"
       # Remover a versão de backup do arquivo (veja acima)
       rm apex/f$APEX_APP_ID.sql-bak
     fi
@@ -168,14 +168,14 @@ reset_release(){
 
   if [[ $CONFIRMATION_DIR != $PROJECT_DIR_FOLDER_NAME ]]; then
     echo -e "${COLOR_RED}Erro: ${COLOR_RESET} diretório de confirmação ausente ou não correspondente. O valor correto é: $PROJECT_DIR_FOLDER_NAME"
-    # exit 1
+    return 1
   else
     # Limpar código específico do release
-    rm $PROJECT_DIR/release/code/*.sql
+    rm "$PROJECT_DIR"/release/code/*.sql
     # Resetar arquivo _run_code.sql
-    echo "-- Referências específicas do release para arquivos nesta pasta" > $PROJECT_DIR/release/code/_run_code.sql
-    echo "-- Este arquivo é executado automaticamente a partir do arquivo /release/_release.sql" >>$PROJECT_DIR/release/code/_run_code.sql
-    echo "-- \n-- Ex: @code/issue-123.sql \n" >>$PROJECT_DIR/release/code/_run_code.sql
+    echo "-- Referências específicas do release para arquivos nesta pasta" > "$PROJECT_DIR/release/code/_run_code.sql"
+    echo "-- Este arquivo é executado automaticamente a partir do arquivo /release/_release.sql" >> "$PROJECT_DIR/release/code/_run_code.sql"
+    printf "-- \n-- Ex: @code/issue-123.sql \n" >> "$PROJECT_DIR/release/code/_run_code.sql"
   fi
 } # reset_release
 
@@ -217,16 +217,14 @@ Para packages é útil listar as extensões na ordem em que devem ser compiladas
     FILE_EXTENSION_ARR="sql"
   fi
 
-  echo "-- GERADO pelo build/build.sh NÃO modifique este arquivo diretamente, pois todas as alterações serão sobrescritas no próximo build" > $PROJECT_DIR/$OUTPUT_FILE
-  echo "-- Listagem automática para $FOLDER_NAME" >> $PROJECT_DIR/$OUTPUT_FILE
-  for FILE_EXT in $(echo $FILE_EXTENSION_ARR | sed "s/,/ /g"); do
+  echo "-- GERADO pelo build/build.sh NÃO modifique este arquivo diretamente, pois todas as alterações serão sobrescritas no próximo build" > "$PROJECT_DIR/$OUTPUT_FILE"
+  echo "-- Listagem automática para $FOLDER_NAME" >> "$PROJECT_DIR/$OUTPUT_FILE"
+  for FILE_EXT in $(echo "$FILE_EXTENSION_ARR" | sed "s/,/ /g"); do
 
     echo "Listando arquivos em: $PROJECT_DIR/$FOLDER_NAME extensão: $FILE_EXT"
-    for file in $PROJECT_DIR//$FOLDER_NAME//*.$FILE_EXT; do
-    # for file in $PROJECT_DIR/$FOLDER_NAME/*.sql; do
-    # for file in $(ls $PROJECT_DIR/$FOLDER_NAME/*.sql ); do
-      echo "prompt @../$FOLDER_NAME/${file##*/}" >> $PROJECT_DIR/$OUTPUT_FILE
-      echo "@../$FOLDER_NAME/${file##*/}" >> $PROJECT_DIR/$OUTPUT_FILE
+    for file in "$PROJECT_DIR/$FOLDER_NAME"/*."$FILE_EXT"; do
+      echo "prompt @../$FOLDER_NAME/${file##*/}" >> "$PROJECT_DIR/$OUTPUT_FILE"
+      echo "@../$FOLDER_NAME/${file##*/}" >> "$PROJECT_DIR/$OUTPUT_FILE"
     done
   done
 
@@ -242,11 +240,11 @@ gen_release_sql(){
   local loc_env_vars="$PROJECT_DIR/release/load_env_vars.sql"
   local loc_apex_install_all="$PROJECT_DIR/release/all_apex.sql"
   # Construir arquivo SQL auxiliar para carregar variáveis de ambiente específicas na sessão SQL*Plus
-  echo "-- GERADO pelo build/build.sh NÃO modifique este arquivo diretamente, pois todas as alterações serão sobrescritas no próximo build\n\n" > $loc_env_vars
-  echo "define env_schema_name=$SCHEMA_NAME" >> $loc_env_vars
-  echo "define env_apex_app_ids=$APEX_APP_IDS" >> $loc_env_vars
-  echo "define env_apex_workspace=$APEX_WORKSPACE" >> $loc_env_vars
-  echo "" >> $loc_env_vars
+  printf "-- GERADO pelo build/build.sh NÃO modifique este arquivo diretamente, pois todas as alterações serão sobrescritas no próximo build\n\n" > "$loc_env_vars"
+  echo "define env_schema_name=$SCHEMA_NAME" >> "$loc_env_vars"
+  echo "define env_apex_app_ids=$APEX_APP_IDS" >> "$loc_env_vars"
+  echo "define env_apex_workspace=$APEX_WORKSPACE" >> "$loc_env_vars"
+  echo "" >> "$loc_env_vars"
   echo "
 prompt Variáveis de ambiente
 select
@@ -255,14 +253,14 @@ select
   '&env_apex_workspace.' env_apex_workspace
 from dual;
 
-" >> $loc_env_vars
+" >> "$loc_env_vars"
 
   # Construir arquivo auxiliar para instalar todas as aplicações APEX
-  echo "-- GERADO pelo build/build.sh NÃO modifique este arquivo." > $loc_apex_install_all
-  echo "prompt *** Instalação APEX ***" >> $loc_apex_install_all
-  for APEX_APP_ID in $(echo $APEX_APP_IDS | sed "s/,/ /g"); do
-    echo "prompt *** App: $APEX_APP_ID ***" >> $loc_apex_install_all
-    echo "@../scripts/apex_install.sql $SCHEMA_NAME $APEX_WORKSPACE $APEX_APP_ID" >> $loc_apex_install_all
+  echo "-- GERADO pelo build/build.sh NÃO modifique este arquivo." > "$loc_apex_install_all"
+  echo "prompt *** Instalação APEX ***" >> "$loc_apex_install_all"
+  for APEX_APP_ID in $(echo "$APEX_APP_IDS" | sed "s/,/ /g"); do
+    echo "prompt *** App: $APEX_APP_ID ***" >> "$loc_apex_install_all"
+    echo "@../scripts/apex_install.sql $SCHEMA_NAME $APEX_WORKSPACE $APEX_APP_ID" >> "$loc_apex_install_all"
   done
 } #gen_release_sql
 
@@ -293,7 +291,7 @@ gen_object(){
   local object_dest_file
 
   # OBJECT_FILE_TEMPLATE_MAP é definido em scripts/project-config.sh
-  for object_type in $(echo $OBJECT_FILE_TEMPLATE_MAP | sed "s/,/ /g"); do
+  for object_type in $(echo "$OBJECT_FILE_TEMPLATE_MAP" | sed "s/,/ /g"); do
 
     object_type_arr=(`echo "$object_type" | sed 's/:/ /g'`)
 
@@ -313,10 +311,10 @@ gen_object(){
         if [[ -f $object_dest_file ]]; then
           echo "${COLOR_ORANGE}Arquivo já existe:${COLOR_RESET} $object_dest_file"
         else
-          cp $object_template.$file_ext $object_dest_file
-          sed -i-bak "s/CHANGEME/$p_object_name/g" $object_dest_file
+          cp "$object_template.$file_ext" "$object_dest_file"
+          sed -i-bak "s/CHANGEME/$p_object_name/g" "$object_dest_file"
           # Remover versão de backup do arquivo
-          rm $object_dest_file-bak
+          rm "$object_dest_file-bak"
           echo "Criado: $object_dest_file"
 
           # Abrir arquivo no editor
@@ -432,9 +430,9 @@ init(){
 
   # #36 Alterar os rótulos do VSCode
   # Veja: https://unix.stackexchange.com/questions/13711/differences-between-sed-on-mac-osx-and-other-standard-sed/131940#131940
-  sed -i-bak "s/CHANGEME_TASKLABEL/$PROJECT_DIR_FOLDER_NAME/g" $VSCODE_TASK_FILE
+  sed -i-bak "s/CHANGEME_TASKLABEL/$PROJECT_DIR_FOLDER_NAME/g" "$VSCODE_TASK_FILE"
   # Remover versão de backup do arquivo
-  rm $VSCODE_TASK_FILE-bak
+  rm "$VSCODE_TASK_FILE-bak"
 
 
   # Inicializando Helper
