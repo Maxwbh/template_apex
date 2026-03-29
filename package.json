@@ -1,6 +1,6 @@
 {
   "name": "template-apex",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Template Oracle APEX 24.2 / Oracle 26 — Guideline Insum 4.4 — Mantido por @maxwbh (M&S do Brasil LTDA)",
   "main": "index.js",
   "scripts": {
