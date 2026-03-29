@@ -1,30 +1,39 @@
 #!/bin/bash
 
+# =============================================================================
+# Configuracao do Projeto — Oracle 26 / APEX 24.2
+# Template: github.com/maxwbh/template_apex
+# Guideline: Insum PL/SQL and SQL Coding Guidelines 4.4
+# =============================================================================
+
 # Nome do Schema
 SCHEMA_NAME=CHANGE_ME
-# Nome do workspace padrão ao qual as aplicações estão associadas
+# Nome do workspace padrao das aplicacoes
 APEX_WORKSPACE=CHANGE_ME
-# Lista separada por vírgula de Aplicações APEX para exportar. Ex: 100,200
+# Lista separada por virgula de Aplicacoes APEX para exportar. Ex: 100,200
 APEX_APP_IDS=CHANGE_ME
 
+# Versao minima do Oracle Database suportada
+ORACLE_DB_MIN_VERSION=23
+# Versao minima do APEX suportada
+APEX_MIN_VERSION=24.2
 
-# Extensões de arquivo
-# Serão usadas em todos os scripts para gerar listas de packages, views, etc. a partir do sistema de arquivos
+
+# Extensoes de arquivo
+# Usadas em todos os scripts para gerar listas de packages, views, etc.
 EXT_PACKAGE_SPEC=pks
 EXT_PACKAGE_BODY=pkb
 EXT_VIEW=sql
 
 
-# Mapeamento de arquivos
-# Será usado no VSCode para permitir a geração rápida de um arquivo baseado em dados de template
-# Formato:
-# <nome>:<prefixo_arquivo_template (sem extensão)>:<extensões de arquivo (; delimitado)>:<diretório destino>
+# Mapeamento de arquivos para geracao via template
+# Formato: <nome>:<prefixo_template (sem extensao)>:<extensoes ; delimitado>:<diretorio destino>
 #
-# Definições:
-# - nome: Nome que será mapeado para a tarefa do VSCode
-# - arquivo de template: Prefixo do arquivo de template a usar (sem extensão)
-# - extensões de arquivo: Lista delimitada por ";" de extensões de arquivo para referenciar cada arquivo de template
-# - diretório destino: onde armazenar o novo arquivo
+# Definicoes:
+# - nome: identificador do tipo de objeto
+# - prefixo_template: caminho do arquivo de template (sem extensao)
+# - extensoes: lista ";" delimitada de extensoes de arquivo
+# - diretorio destino: onde armazenar o novo arquivo
 OBJECT_FILE_TEMPLATE_MAP=""
 OBJECT_FILE_TEMPLATE_MAP="$OBJECT_FILE_TEMPLATE_MAP,package:templates/template_pkg:$EXT_PACKAGE_SPEC;$EXT_PACKAGE_BODY:packages"
 OBJECT_FILE_TEMPLATE_MAP="$OBJECT_FILE_TEMPLATE_MAP,view:templates/template_view:$EXT_VIEW:views"

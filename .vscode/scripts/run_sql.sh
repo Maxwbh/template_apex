@@ -1,43 +1,43 @@
 #!/bin/bash
-# Variáveis de ambiente $1, $2, etc. vêm do array args do tasks.json
+# Compilacao de arquivo SQL/PL-SQL via VSCode
+# Compativel com Oracle 26 / APEX 24.2
 
-# Diretório deste arquivo
+# Diretorio deste arquivo
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # Carregar helper
-source $SCRIPT_DIR/../../scripts/helper.sh
+source "$SCRIPT_DIR/../../scripts/helper.sh"
 
-# O arquivo pode ser referenciado como caminho completo ou caminho relativo
+# O arquivo pode ser referenciado como caminho completo ou relativo
 FILE_FULL_PATH=$2
 FILE_RELATIVE_PATH=$1
 
 # VSCODE_TASK_COMPILE_FILE deve ser definido em user-config.sh
 if [ -z "$VSCODE_TASK_COMPILE_FILE" ]; then
-  echo -e "${COLOR_ORANGE} Aviso: VSCODE_TASK_COMPILE_FILE não está definido.${COLOR_RESET}\nDefina VSCODE_TASK_COMPILE_FILE em $USER_CONFIG_FILE"
-  echo -e "Usando caminho completo como padrão"
+  echo -e "${COLOR_ORANGE} Aviso: VSCODE_TASK_COMPILE_FILE nao esta definido.${COLOR_RESET}\nDefina VSCODE_TASK_COMPILE_FILE em $USER_CONFIG_FILE"
+  echo -e "Usando caminho completo como padrao"
   VSCODE_TASK_COMPILE_FILE=$FILE_FULL_PATH
 fi
-# Como VSCODE_TASK_COMPILE_FILE contém a referência da variável, é necessário avaliá-la aqui
+# Avaliar referencia de variavel
 VSCODE_TASK_COMPILE_FILE=$(eval "echo $VSCODE_TASK_COMPILE_FILE")
 
-echo -e "Processando arquivo: ${COLOR_LIGHT_GREEN}$VSCODE_TASK_COMPILE_FILE${COLOR_RESET}"
+echo -e "Compilando: ${COLOR_LIGHT_GREEN}$VSCODE_TASK_COMPILE_FILE${COLOR_RESET}"
 echo -e "pwd: $PWD"
 
-# Executar sqlplus, executar o script e então obter a lista de erros e sair
-# VSCODE_TASK_COMPILE_BIN é definido no arquivo config.sh (sqlplus ou sqlcl)
+# Guideline: habilitar warnings PL/SQL para qualidade de codigo
 $VSCODE_TASK_COMPILE_BIN $DB_CONN << EOF
 set define off
 --
--- Defina quaisquer instruções alter session aqui (exemplos abaixo)
+-- Oracle 26: configuracoes recomendadas para compilacao
+alter session set plsql_warnings = 'ENABLE:ALL';
 -- alter session set plsql_ccflags = 'dev_env:true';
--- alter session set plsql_warnings = 'ENABLE:ALL';
+-- alter session set plsql_optimize_level = 3;
 --
--- #38: Isso gerará uma mensagem de aviso no SQL*Plus mas vale manter para incentivar o uso se estiver usando SQLcl para compilar
+-- SQLcl: habilitar codescan para analise estatica
 set codescan all
 --
--- Carregar comandos específicos do usuário aqui
+-- Comandos especificos do usuario
 $VSCODE_TASK_COMPILE_SQL_PREFIX
---
 --
 -- Executar arquivo
 @$VSCODE_TASK_COMPILE_FILE
