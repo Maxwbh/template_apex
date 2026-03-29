@@ -1,5 +1,5 @@
 -- Instala uma aplicacao APEX
--- Compativel com Oracle APEX 24.2+ / Oracle 26
+-- Compativel com Oracle APEX 24.2+ / Oracle 19-26
 --
 -- Parametros:
 -- 1: Schema para instalar

@@ -1,5 +1,5 @@
 -- Desabilita lista separada por virgula de aplicacoes APEX
--- Compativel com Oracle APEX 24.2+ / Oracle 26
+-- Compativel com Oracle APEX 24.2+ / Oracle 19-26
 -- Usado principalmente no inicio de um processo de release APEX
 -- Um commit e aplicado ao final. Se nao, a app nao sera desabilitada para usuarios
 --
@@ -23,7 +23,7 @@ begin
 
   for i in l_apex_app_ids.first .. l_apex_app_ids.last loop
 
-    -- APEX 24.2: apex_session.create_session continua sendo o padrao
+    -- APEX 5.1+: apex_session.create_session disponivel desde APEX 5.1
     apex_session.create_session(
       p_app_id   => l_apex_app_ids(i)
      ,p_page_id  => 1

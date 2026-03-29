@@ -1,10 +1,11 @@
--- Guideline: DDL com if not exists (Oracle 23c+/26)
--- Guideline G-2180: usar identity columns ao inves de sequences + triggers
--- Guideline G-2340: usar timestamp with local time zone para auditoria
+-- Guideline G-2180: usar identity columns ao inves de sequences + triggers (Oracle 12c+)
+-- Guideline G-2340: usar timestamp with local time zone para auditoria (Oracle 9i+)
 -- Guideline G-2110: usar varchar2 com semantica char quando possivel
+-- Compativel com Oracle 19 a 26
+-- Nota: Oracle 23c+ suporta "create table if not exists" para DDL idempotente
 
 prompt Criando tabela change_me
-create table if not exists change_me (
+create table change_me (
   -- Guideline G-2180: identity column para chave primaria
   change_me_id   number         generated always as identity not null
  ,change_me_code varchar2(30)   not null

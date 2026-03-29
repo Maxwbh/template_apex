@@ -1,6 +1,6 @@
 #!/bin/bash
 # Compilacao de arquivo SQL/PL-SQL via VSCode
-# Compativel com Oracle 26 / APEX 24.2
+# Compativel com Oracle 19-26 / APEX 24.2
 
 # Diretorio deste arquivo
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -28,7 +28,7 @@ echo -e "pwd: $PWD"
 $VSCODE_TASK_COMPILE_BIN $DB_CONN << EOF
 set define off
 --
--- Oracle 26: configuracoes recomendadas para compilacao
+-- Oracle 19+: configuracoes recomendadas para compilacao
 alter session set plsql_warnings = 'ENABLE:ALL';
 -- alter session set plsql_ccflags = 'dev_env:true';
 -- alter session set plsql_optimize_level = 3;
