@@ -1,10 +1,10 @@
-# Templates de Codigo
+# Templates de Código
 
 > Modelos prontos para criar packages, views, tabelas e scripts de dados rapidamente.
 
 ---
 
-## Inicio Rapido
+## Início Rápido
 
 ```bash
 source scripts/helper.sh
@@ -26,14 +26,14 @@ gen_object data_json data_categorias
 
 ---
 
-## Templates Disponiveis
+## Templates Disponíveis
 
-| Arquivo | Tipo | Gera em | Descricao |
+| Arquivo | Tipo | Gera em | Descrição |
 |:--|:--|:--|:--|
-| `template_pkg.pks` | Package Spec | `packages/` | Especificacao do package |
-| `template_pkg.pkb` | Package Body | `packages/` | Body com Logger, tratamento de erros e documentacao |
-| `template_view.sql` | View | `views/` | View basica com `create or replace force` |
-| `template_table.sql` | Tabela | - | DDL completo com auditoria, constraints e indices |
+| `template_pkg.pks` | Package Spec | `packages/` | Especificação do package |
+| `template_pkg.pkb` | Package Body | `packages/` | Body com Logger, tratamento de erros e documentação |
+| `template_view.sql` | View | `views/` | View básica com `create or replace force` |
+| `template_table.sql` | Tabela | - | DDL completo com auditoria, constraints e índices |
 | `template_data_array.sql` | Dados (Array) | `data/` | Carga via PL/SQL `varray` + `merge` |
 | `template_data_json.sql` | Dados (JSON) | `data/` | Carga via `json_table` + `merge` |
 
@@ -70,12 +70,12 @@ create or replace package body pkg_clientes as
     logger.append_param(l_params, 'p_nome', p_nome);
     logger.log('INICIO', l_scope, null, l_params);
 
-    -- Sua logica aqui
+    -- Sua lógica aqui
 
     logger.log('FIM', l_scope);
   exception
     when others then
-      logger.log_error('Excecao nao tratada', l_scope, null, l_params);
+      logger.log_error('Exceção não tratada', l_scope, null, l_params);
       raise;
   end p_inserir;
 
@@ -108,7 +108,7 @@ create or replace force view vw_pedidos_pendentes as
 
 ### Tabela — usando o template manualmente
 
-O template de tabela nao e gerado automaticamente. Copie e adapte:
+O template de tabela não é gerado automaticamente. Copie e adapte:
 
 ```sql
 -- Exemplo baseado em template_table.sql
@@ -133,9 +133,9 @@ alter table clientes add constraint clientes_uk1 unique (cliente_code);
 alter table clientes add constraint clientes_ck1
   check (cliente_code = trim(upper(cliente_code)));
 
--- Comentarios
+-- Comentários
 comment on table clientes is 'Cadastro de clientes';
-comment on column clientes.cliente_code is 'Codigo unico do cliente';
+comment on column clientes.cliente_code is 'Código único do cliente';
 comment on column clientes.nome is 'Nome completo';
 ```
 
@@ -201,8 +201,8 @@ gen_object data_json data_categorias
 -- Trecho do arquivo gerado (data/data_categorias.sql)
 l_json := q'!
 [
-  {"data_categorias_code": "ELETRO", "data_categorias_name": "Eletronicos", "data_categorias_seq": 1},
-  {"data_categorias_code": "MOVEIS", "data_categorias_name": "Moveis", "data_categorias_seq": 2},
+  {"data_categorias_code": "ELETRO", "data_categorias_name": "Eletrônicos", "data_categorias_seq": 1},
+  {"data_categorias_code": "MOVEIS", "data_categorias_name": "Móveis", "data_categorias_seq": 2},
   {"data_categorias_code": "ROUPAS", "data_categorias_name": "Roupas", "data_categorias_seq": 3}
 ]
 !';
@@ -210,14 +210,14 @@ l_json := q'!
 
 ---
 
-## Personalizacao
+## Personalização
 
 ### Adicionar novos tipos de template
 
 Edite [`scripts/project-config.sh`](../scripts/project-config.sh):
 
 ```bash
-# Formato: nome:prefixo_template:extensoes:pasta_destino
+# Formato: nome:prefixo_template:extensões:pasta_destino
 OBJECT_FILE_TEMPLATE_MAP="$OBJECT_FILE_TEMPLATE_MAP,trigger:templates/template_trigger:sql:triggers"
 ```
 
