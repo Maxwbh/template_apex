@@ -1,32 +1,63 @@
-prompt change_me
-create table change_me (
-  change_me_id number generated always as identity not null,
-  change_me_code varchar2(30) not null,
-  change_me_name varchar2(30) not null,
-  change_me_seq number not null,
-  created_on date default sysdate not null,
-	created_by varchar2(255 byte) default
+-- Guideline: DDL com if not exists (Oracle 23c+/26)
+-- Guideline G-2180: usar identity columns ao inves de sequences + triggers
+-- Guideline G-2340: usar timestamp with local time zone para auditoria
+-- Guideline G-2110: usar varchar2 com semantica char quando possivel
+
+prompt Criando tabela change_me
+create table if not exists change_me (
+  -- Guideline G-2180: identity column para chave primaria
+  change_me_id   number         generated always as identity not null
+ ,change_me_code varchar2(30)   not null
+ ,change_me_name varchar2(255)  not null
+ ,change_me_desc varchar2(4000)
+ ,change_me_seq  number         not null
+ ,is_active      number(1,0)    default 1 not null
+  -- Colunas de auditoria padrao (Guideline G-2340)
+ ,created_on     timestamp with local time zone default localtimestamp not null
+ ,created_by     varchar2(255 byte) default
     coalesce(
-      sys_context('APEX$SESSION','app_user'),
-      regexp_substr(sys_context('userenv','client_identifier'),'^[^:]*'),
-      sys_context('userenv','session_user')
+      sys_context('APEX$SESSION','app_user')
+     ,regexp_substr(sys_context('userenv','client_identifier'),'^[^:]*')
+     ,sys_context('userenv','session_user')
     )
     not null
-    ,
-  updated_on date,
-  updated_by varchar2(255 byte)
+ ,updated_on     timestamp with local time zone
+ ,updated_by     varchar2(255 byte)
 );
 
-comment on table change_me is 'ALTERE_AQUI';
-comment on column change_me.CHANGEME is 'ALTERE_AQUI';
+-- Comentarios (Guideline G-2150: documentar todos os objetos)
+comment on table change_me is 'TODO: descricao da tabela';
+comment on column change_me.change_me_id is 'Identificador unico (PK identity)';
+comment on column change_me.change_me_code is 'Codigo unico de negocio (UK)';
+comment on column change_me.change_me_name is 'Nome descritivo';
+comment on column change_me.change_me_desc is 'Descricao detalhada';
+comment on column change_me.change_me_seq is 'Sequencia de ordenacao';
+comment on column change_me.is_active is 'Flag de ativo: 1=Sim, 0=Nao';
+comment on column change_me.created_on is 'Data/hora de criacao do registro';
+comment on column change_me.created_by is 'Usuario que criou o registro';
+comment on column change_me.updated_on is 'Data/hora da ultima atualizacao';
+comment on column change_me.updated_by is 'Usuario da ultima atualizacao';
 
-alter table change_me add constraint change_me_pk primary key (change_me_id);
+-- Constraints (Guideline G-2110: nomear todas as constraints)
+alter table change_me add constraint change_me_pk
+  primary key (change_me_id);
 
-alter table change_me add constraint change_me_uk1 unique(change_me_code);
+alter table change_me add constraint change_me_uk1
+  unique (change_me_code);
 
-alter table change_me add constraint change_me_ck1 check(change_me_code = trim(upper(change_me_code)));
-alter table change_me add constraint change_me_ck2 check(change_me_seq = trunc(change_me_seq));
+-- Guideline G-2120: usar check constraints para validacao de dominio
+alter table change_me add constraint change_me_ck1
+  check (change_me_code = trim(upper(change_me_code)));
 
-alter table change_me add constraint change_me_fk1 foreign key (changeme) references changeme_dest(changeme);
+alter table change_me add constraint change_me_ck2
+  check (change_me_seq = trunc(change_me_seq));
 
-create index change_me_idx1 on change_me(changeme);
+alter table change_me add constraint change_me_ck3
+  check (is_active in (0, 1));
+
+-- Foreign keys (descomentar e ajustar conforme necessario)
+-- alter table change_me add constraint change_me_fk1
+--   foreign key (parent_id) references parent_table(parent_id);
+
+-- Indices para foreign keys (Guideline G-2130: indexar colunas de FK)
+-- create index change_me_idx1 on change_me(parent_id);

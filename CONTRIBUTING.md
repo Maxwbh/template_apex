@@ -5,14 +5,15 @@
 
 <p align="center">
   <a href="https://github.com/maxwbh"><img src="https://img.shields.io/badge/mantido%20por-%40maxwbh-purple?style=for-the-badge&logo=github" alt="@maxwbh"></a>
-  <a href="https://github.com/maxwbh/template_apex"><img src="https://img.shields.io/badge/M%26S%20do%20Brasil-LTDA-blue?style=for-the-badge" alt="M&S do Brasil"></a>
+  <a href="https://github.com/insum-labs/plsql-and-sql-coding-guidelines"><img src="https://img.shields.io/badge/Guideline-Insum%204.4-blue?style=for-the-badge" alt="Guideline Insum 4.4"></a>
+  <a href="https://github.com/maxwbh/template_apex"><img src="https://img.shields.io/badge/Oracle%2026-APEX%2024.2-red?style=for-the-badge&logo=oracle" alt="Oracle 26 / APEX 24.2"></a>
 </p>
 
 ---
 
 ## Visao Geral
 
-Este repositorio e um template para projetos Oracle APEX/PL-SQL mantido por [@maxwbh](https://github.com/maxwbh) (Maxwell da Silva Oliveira — M&S do Brasil LTDA).
+Este repositorio e um template para projetos **Oracle 26 / APEX 24.2** seguindo as [Insum PL/SQL and SQL Coding Guidelines 4.4](https://github.com/insum-labs/plsql-and-sql-coding-guidelines). Mantido por [@maxwbh](https://github.com/maxwbh) (Maxwell da Silva Oliveira — M&S do Brasil LTDA).
 
 ---
 
@@ -41,36 +42,43 @@ Este repositorio e um template para projetos Oracle APEX/PL-SQL mantido por [@ma
 
 ## Padroes de Codigo
 
-### PL/SQL
+### PL/SQL — [Guideline Insum 4.4](https://github.com/insum-labs/plsql-and-sql-coding-guidelines)
 
 ```sql
--- Use Logger para rastreamento
+-- Guideline G-1110/G-1120/G-1130: Prefixos obrigatorios
+gc_scope_prefix constant varchar2(31) := lower($$plsql_unit) || '.';  -- gc_ constante global
+g_config_cache  varchar2(4000);                                        -- g_  variavel global
+l_result        varchar2(4000);                                        -- l_  variavel local
+p_cliente_id    number;                                                 -- p_  parametro
+t_rec_data      ...;                                                    -- t_  tipo
+c_max_rows      constant number := 1000;                                -- c_  constante local
+
+-- Guideline G-5020: Registrar parametros de entrada com Logger
+logger.append_param(l_params, 'p_cliente_id', p_cliente_id);
 logger.log('INICIO', l_scope, null, l_params);
 
--- Documente procedures com blocos padrao
-/**
- * Descricao da procedure
- *
- * @author @maxwbh
- * @created 2026-03-28
- * @param p_cliente_id ID do cliente
- * @return
- */
-
--- Trate excecoes adequadamente
+-- Guideline G-5010: Tratar excecoes no nivel mais proximo
 exception
   when others then
     logger.log_error('Excecao nao tratada', l_scope, null, l_params);
     raise;
+
+-- Oracle 26: DDL com IF NOT EXISTS
+create table if not exists clientes (...);
+
+-- Oracle 26: timestamp com timezone para auditoria
+created_on timestamp with local time zone default localtimestamp not null
 ```
 
 ### SQL
 
-| Regra | Exemplo |
-|:--|:--|
-| Scripts de dados devem ser **re-executaveis** | Use `MERGE` ao inves de `INSERT` |
-| DDL nao re-executavel | Coloque em `release/code/issue-XXX.sql` |
-| Nomeie por ticket | `issue-42.sql`, `issue-123.sql` |
+| Guideline | Regra | Exemplo |
+|:--|:--|:--|
+| G-4120 | Listar colunas explicitamente | Nunca `select *` |
+| G-5070 | Scripts re-executaveis | `MERGE` ao inves de `INSERT` |
+| G-2180 | Identity columns | `generated always as identity` |
+| G-2150 | Documentar objetos | `comment on table/column` |
+| - | DDL nao re-executavel | Em `release/code/issue-XXX.sql` |
 
 ---
 
