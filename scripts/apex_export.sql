@@ -1,25 +1,22 @@
 
--- Executar no SQLcl
+-- Executar no SQLcl (24.x+)
+-- Compativel com Oracle APEX 24.2+ / Oracle 26
 --
--- Parâmetros:
--- 1: ID da Aplicação
--- 2: Opções de exportação (opcional). Por exemplo: "-split"
+-- Parametros:
+-- 1: ID da Aplicacao
+-- 2: Opcoes de exportacao (opcional). Ex: "-split", "-skipExportDate"
 --
--- Exemplos
---
--- Exportar aplicação 100 para f100.sql
--- @apex_export_app 100
---
--- Exportar aplicação 100 como arquivos divididos
--- @apex_export_app 100 -split
+-- Exemplos:
+-- @apex_export.sql 100
+-- @apex_export.sql 100 -split
+-- @apex_export.sql 100 "-split -skipExportDate"
 --
 set termout off
 set verify off
 
 
--- De: https://stackoverflow.com/questions/13474899/default-value-for-paramteters-not-passed-sqlplus-script
--- e: http://vbegun.blogspot.com/2008/04/on-sqlplus-defines.html
--- Permitir valor opcional para parâmetro 2
+-- Permitir valor opcional para parametro 2
+-- Ref: https://stackoverflow.com/questions/13474899
 column 1 new_value 1
 column 2 new_value 2
 select '' "1", '' "2"
@@ -35,14 +32,12 @@ define EXPORT_OPTIONS = "&2"
 set termout on
 set serveroutput on
 begin
-  dbms_output.put_line ( 'ID da App: &APP_ID' );
-  dbms_output.put_line ( 'Opções de Exportação: &EXPORT_OPTIONS' );
-  dbms_output.put_line ( '------------------' );
+  dbms_output.put_line('ID da App: &APP_ID');
+  dbms_output.put_line('Opcoes de Exportacao: &EXPORT_OPTIONS');
+  dbms_output.put_line('------------------');
 end;
 /
 set serveroutput off
--- fim
 
--- spool f&APP_ID..sql
+-- APEX 24.2: apex export suporta -skipExportDate para diffs mais limpos
 apex export -applicationid &APP_ID -dir apex &EXPORT_OPTIONS
--- spool off

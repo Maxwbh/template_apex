@@ -1,6 +1,11 @@
 #!/bin/bash
+# =============================================================================
+# Helper Functions — Oracle 26 / APEX 24.2
+# Template: github.com/maxwbh/template_apex
+# Guideline: Insum PL/SQL and SQL Coding Guidelines 4.4
+# =============================================================================
 
-# Variáveis globais
+# Variaveis globais
 # Encontrar o caminho atual onde este script está
 # Isso precisa ser executado fora de qualquer função, pois $0 tem significado diferente dentro de uma função
 # Se este script está sendo chamado usando "source ...", então ${BASH_SOURCE[0]} é avaliado como nulo. Use $0 nesse caso
@@ -74,10 +79,12 @@ VSCODE_TASK_COMPILE_BIN=\$SQLPLUS
 # Nota: Você precisa escapar o "\$" aqui, então deve ser "\\\$FILE_FULL_PATH"
 VSCODE_TASK_COMPILE_FILE=\\\$FILE_FULL_PATH
 
-# Este código será executado antes do arquivo ser executado
+# Este codigo sera executado antes do arquivo ser compilado
+# Oracle 26: recomendado habilitar warnings para qualidade de codigo
 read -d '' VSCODE_TASK_COMPILE_SQL_PREFIX << EOF
--- Adicione quaisquer instruções alter session customizadas aqui
--- alter session set plsql_warnings = 'ENABLE:ALL';
+-- Guideline Insum 4.4: habilitar warnings PL/SQL
+alter session set plsql_warnings = 'ENABLE:ALL';
+-- alter session set plsql_optimize_level = 3;
 EOF
 
 EOL

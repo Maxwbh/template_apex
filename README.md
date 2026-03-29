@@ -1,11 +1,12 @@
 <p align="center">
-  <strong>Template APEX</strong><br>
-  Template profissional para desenvolvimento Oracle PL/SQL e APEX
+  <strong>Template APEX v2.0.0</strong><br>
+  Template profissional para Oracle 26, APEX 24.2 e PL/SQL
 </p>
 
 <p align="center">
-  <a href="https://github.com/maxwbh/template_apex"><img src="https://img.shields.io/badge/Oracle-APEX-red?style=for-the-badge&logo=oracle" alt="Oracle APEX"></a>
-  <a href="https://github.com/maxwbh/template_apex"><img src="https://img.shields.io/badge/PL%2FSQL-Template-blue?style=for-the-badge" alt="PL/SQL"></a>
+  <a href="https://github.com/maxwbh/template_apex"><img src="https://img.shields.io/badge/Oracle-26-red?style=for-the-badge&logo=oracle" alt="Oracle 26"></a>
+  <a href="https://github.com/maxwbh/template_apex"><img src="https://img.shields.io/badge/APEX-24.2-orange?style=for-the-badge&logo=oracle" alt="APEX 24.2"></a>
+  <a href="https://github.com/insum-labs/plsql-and-sql-coding-guidelines"><img src="https://img.shields.io/badge/Guideline-Insum%204.4-blue?style=for-the-badge" alt="Guideline Insum 4.4"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/licen%C3%A7a-CC0%201.0-green?style=for-the-badge" alt="Licenca"></a>
   <a href="https://github.com/maxwbh"><img src="https://img.shields.io/badge/mantido%20por-%40maxwbh-purple?style=for-the-badge&logo=github" alt="Mantido por @maxwbh"></a>
 </p>
@@ -14,7 +15,7 @@
 
 > **Mantido por** [@maxwbh](https://github.com/maxwbh) — Maxwell da Silva Oliveira — **M&S do Brasil LTDA**
 >
-> Este template fornece scripts, processos e estrutura de pastas para acelerar o desenvolvimento e simplificar releases em projetos Oracle APEX/PL-SQL.
+> Template para Oracle Database 26 / APEX 24.2 seguindo as [Insum PL/SQL and SQL Coding Guidelines 4.4](https://github.com/insum-labs/plsql-and-sql-coding-guidelines). Fornece scripts, processos e estrutura de pastas para acelerar o desenvolvimento e simplificar releases.
 
 ---
 
@@ -47,10 +48,11 @@ nano scripts/user-config.sh           # conexao com o banco
 
 ### O que esta incluido
 
+- **Oracle 26** — DDL com `IF NOT EXISTS`, `timestamp with local time zone`
+- **APEX 24.2** — export com `-skipExportDate`, APIs atualizadas
+- **Guideline Insum 4.4** — prefixos `l_`, `p_`, `gc_`, `t_`, Logger, documentacao
 - **Build automatizado** — gera scripts de release com um comando
-- **Integracao VSCode** — compile PL/SQL direto do editor
-- **Geracao de objetos** — crie packages, views e dados via template
-- **Framework de release** — processo consistente de deploy
+- **Integracao VSCode** — compile PL/SQL com warnings habilitados
 - **Templates prontos** — tabelas, packages, views e dados
 
 </td>
@@ -277,6 +279,52 @@ Use as tarefas integradas para compilar sem sair do editor:
 
 ---
 
+## Padroes de Codigo — Guideline Insum 4.4
+
+Este template segue as [Insum PL/SQL and SQL Coding Guidelines 4.4](https://github.com/insum-labs/plsql-and-sql-coding-guidelines):
+
+### Nomenclatura de Variaveis
+
+| Prefixo | Uso | Exemplo |
+|:--|:--|:--|
+| `l_` | Variavel local | `l_count`, `l_result` |
+| `p_` | Parametro | `p_cliente_id`, `p_nome` |
+| `gc_` | Constante global (package) | `gc_scope_prefix`, `gc_status_ativo` |
+| `g_` | Variavel global (package) | `g_config_cache` |
+| `c_` | Constante local | `c_max_tentativas` |
+| `t_` | Tipo definido pelo usuario | `t_rec_data`, `t_tab_clientes` |
+| `cur_` | Cursor | `cur_clientes_ativos` |
+| `e_` | Excecao | `e_registro_nao_encontrado` |
+
+### Regras Principais
+
+```sql
+-- G-2180: usar identity columns
+change_me_id number generated always as identity not null
+
+-- G-2340: timestamp com timezone para auditoria
+created_on timestamp with local time zone default localtimestamp not null
+
+-- G-4120: listar colunas explicitamente (nunca select *)
+select c.cliente_id, c.nome from clientes c
+
+-- G-5010: tratar excecoes no nivel mais proximo
+exception when others then
+  logger.log_error('Excecao nao tratada', l_scope, null, l_params);
+  raise;
+
+-- G-5020: registrar parametros de entrada
+logger.append_param(l_params, 'p_cliente_id', p_cliente_id);
+
+-- Oracle 26: DDL com IF NOT EXISTS
+create table if not exists minha_tabela (...)
+```
+
+> Referencia completa: [github.com/insum-labs/plsql-and-sql-coding-guidelines](https://github.com/insum-labs/plsql-and-sql-coding-guidelines)
+> Veja tambem: [`CONTRIBUTING.md`](CONTRIBUTING.md) para convencoes detalhadas.
+
+---
+
 ## Fluxos de Trabalho Git
 
 Recomendamos o [GitHub Flow](https://guides.github.com/introduction/flow/) pela simplicidade. Outras opcoes:
@@ -331,6 +379,7 @@ Instale o [Windows Subsystem for Linux](https://en.wikipedia.org/wiki/Windows_Su
 <p align="center">
   <sub>
     Mantido por <a href="https://github.com/maxwbh">@maxwbh</a> — Maxwell da Silva Oliveira — M&S do Brasil LTDA<br>
+    Oracle 26 / APEX 24.2 / <a href="https://github.com/insum-labs/plsql-and-sql-coding-guidelines">Guideline Insum 4.4</a><br>
     Baseado no <a href="https://github.com/insum-labs/starter-project-template">Starter Project Template</a> da InSum Labs — Licenca CC0 1.0 Universal
   </sub>
 </p>
