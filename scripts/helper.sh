@@ -1,6 +1,6 @@
 #!/bin/bash
 # =============================================================================
-# Helper Functions — Oracle 26 / APEX 24.2
+# Helper Functions — Oracle 19-26 / APEX 24.2
 # Template: github.com/maxwbh/template_apex
 # Guideline: Insum PL/SQL and SQL Coding Guidelines 4.4
 # =============================================================================
@@ -80,7 +80,7 @@ VSCODE_TASK_COMPILE_BIN=\$SQLPLUS
 VSCODE_TASK_COMPILE_FILE=\\\$FILE_FULL_PATH
 
 # Este codigo sera executado antes do arquivo ser compilado
-# Oracle 26: recomendado habilitar warnings para qualidade de codigo
+# Oracle 19+: recomendado habilitar warnings para qualidade de codigo
 read -d '' VSCODE_TASK_COMPILE_SQL_PREFIX << EOF
 -- Guideline Insum 4.4: habilitar warnings PL/SQL
 alter session set plsql_warnings = 'ENABLE:ALL';

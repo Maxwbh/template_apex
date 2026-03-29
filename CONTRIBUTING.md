@@ -6,14 +6,14 @@
 <p align="center">
   <a href="https://github.com/maxwbh"><img src="https://img.shields.io/badge/mantido%20por-%40maxwbh-purple?style=for-the-badge&logo=github" alt="@maxwbh"></a>
   <a href="https://github.com/insum-labs/plsql-and-sql-coding-guidelines"><img src="https://img.shields.io/badge/Guideline-Insum%204.4-blue?style=for-the-badge" alt="Guideline Insum 4.4"></a>
-  <a href="https://github.com/maxwbh/template_apex"><img src="https://img.shields.io/badge/Oracle%2026-APEX%2024.2-red?style=for-the-badge&logo=oracle" alt="Oracle 26 / APEX 24.2"></a>
+  <a href="https://github.com/maxwbh/template_apex"><img src="https://img.shields.io/badge/Oracle%2019--26-APEX%2024.2-red?style=for-the-badge&logo=oracle" alt="Oracle 19-26 / APEX 24.2"></a>
 </p>
 
 ---
 
 ## Visao Geral
 
-Este repositorio e um template para projetos **Oracle 26 / APEX 24.2** seguindo as [Insum PL/SQL and SQL Coding Guidelines 4.4](https://github.com/insum-labs/plsql-and-sql-coding-guidelines). Mantido por [@maxwbh](https://github.com/maxwbh) (Maxwell da Silva Oliveira — M&S do Brasil LTDA).
+Este repositorio e um template para projetos **Oracle 19-26 / APEX 24.2** seguindo as [Insum PL/SQL and SQL Coding Guidelines 4.4](https://github.com/insum-labs/plsql-and-sql-coding-guidelines). Mantido por [@maxwbh](https://github.com/maxwbh) (Maxwell da Silva Oliveira — M&S do Brasil LTDA).
 
 ---
 
@@ -63,10 +63,11 @@ exception
     logger.log_error('Excecao nao tratada', l_scope, null, l_params);
     raise;
 
--- Oracle 26: DDL com IF NOT EXISTS
-create table if not exists clientes (...);
+-- Oracle 23c+: DDL com IF NOT EXISTS (opcional, nao disponivel em 19/21)
+-- create table if not exists clientes (...);
+create table clientes (...);
 
--- Oracle 26: timestamp com timezone para auditoria
+-- Oracle 9i+: timestamp com timezone para auditoria
 created_on timestamp with local time zone default localtimestamp not null
 ```
 

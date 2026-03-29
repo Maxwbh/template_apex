@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # =============================================================================
-# Configuracao do Projeto — Oracle 26 / APEX 24.2
+# Configuracao do Projeto — Oracle 19-26 / APEX 24.2
 # Template: github.com/maxwbh/template_apex
 # Guideline: Insum PL/SQL and SQL Coding Guidelines 4.4
 # =============================================================================
@@ -14,7 +14,7 @@ APEX_WORKSPACE=CHANGE_ME
 APEX_APP_IDS=CHANGE_ME
 
 # Versao minima do Oracle Database suportada
-ORACLE_DB_MIN_VERSION=23
+ORACLE_DB_MIN_VERSION=19
 # Versao minima do APEX suportada
 APEX_MIN_VERSION=24.2
 

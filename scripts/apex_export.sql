@@ -1,6 +1,6 @@
 
 -- Executar no SQLcl (24.x+)
--- Compativel com Oracle APEX 24.2+ / Oracle 26
+-- Compativel com Oracle APEX 24.2+ / Oracle 19-26
 --
 -- Parametros:
 -- 1: ID da Aplicacao

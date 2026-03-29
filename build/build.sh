@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # =============================================================================
-# Build Script — Oracle 26 / APEX 24.2
+# Build Script — Oracle 19-26 / APEX 24.2
 # Template: github.com/maxwbh/template_apex
 # =============================================================================
 # ./build.sh <versao>
@@ -24,7 +24,7 @@ source "$SCRIPT_DIR/../scripts/helper.sh"
 
 
 echo -e "=== Build Release v$VERSION ==="
-echo -e "Oracle 26 / APEX 24.2 / Guideline Insum 4.4\n"
+echo -e "Oracle 19-26 / APEX 24.2 / Guideline Insum 4.4\n"
 
 echo -e "*** Listando todas as views e packages ***\n"
 list_all_files views release/all_views.sql "$EXT_VIEW"

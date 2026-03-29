@@ -1,5 +1,5 @@
 -- =============================================================================
--- Release Script — Oracle 26 / APEX 24.2
+-- Release Script — Oracle 19-26 / APEX 24.2
 -- Template: github.com/maxwbh/template_apex
 -- Guideline: Insum PL/SQL and SQL Coding Guidelines 4.4
 -- =============================================================================
@@ -111,7 +111,7 @@ prompt === Carregando dados ===
 
 
 -- Recompilar objetos invalidos do schema
--- Oracle 26: dbms_utility.compile_schema continua sendo a abordagem padrao
+-- Oracle 19+: dbms_utility.compile_schema continua sendo a abordagem padrao
 prompt === Recompilando objetos invalidos do schema ===
 begin
   dbms_utility.compile_schema(schema => user, compile_all => false);

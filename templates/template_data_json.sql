@@ -1,7 +1,7 @@
 set define off;
 
 -- Guideline G-5070: scripts de dados devem ser re-executaveis (usar MERGE)
--- Oracle 26: suporte aprimorado a json_table
+-- Oracle 12c+: json_table disponivel desde 12.1.0.2
 
 prompt Carregando dados de CHANGE_ME
 
