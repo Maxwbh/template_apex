@@ -72,21 +72,24 @@ Crie um **Application Process** em sua aplicação APEX:
 
 ```sql
 -- Application Process: APEX Nitro
+-- Sequência: -999 (executar antes de tudo)
 -- Ponto: On Load: Before Header
--- Condição: Nunca (ativar manualmente durante desenvolvimento)
-apex_javascript.add_library(
-  p_name      => 'app',
-  p_directory => 'http://localhost:4000/',
-  p_version   => null
-);
-
-apex_css.add_file(
-  p_name      => 'app',
-  p_directory => 'http://localhost:4000/'
-);
+-- Condição: Build Option "DEV_ONLY" (ver abaixo)
+apex_application.g_flow_images := owa_util.get_cgi_env('APEX-Nitro');
 ```
 
-> **Importante:** Este processo só deve estar ativo durante o desenvolvimento local. Em produção, os arquivos devem ser carregados via **Static Application Files** ou **Shared Components**.
+4. Crie uma **Build Option** para controlar o ambiente:
+   - Acesse **Componentes Compartilhados** > **Opções de Build**
+   - Crie: `DEV_ONLY` (Status: `Include`)
+   - Associe o Application Process `APEX Nitro` a esta Build Option
+   - Em produção, altere o status para `Exclude`
+
+5. Referencie os arquivos na aplicação:
+   - Vá em **Propriedades da Interface do Usuário**
+   - CSS: `#APP_IMAGES#app#MIN#.css`
+   - JS: `#APP_IMAGES#app#MIN#.js`
+
+> **Importante:** A Build Option garante que o APEX Nitro só redireciona arquivos em desenvolvimento. Em produção, os arquivos são carregados via **Static Application Files** (use `apex-nitro upload`).
 
 ### 4. Iniciar o desenvolvimento
 
