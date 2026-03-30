@@ -51,6 +51,30 @@
       },
       "options": {},
       "problemMatcher": []
+    },
+    // APEX Nitro — desenvolvimento front-end
+    {
+      "label": "apex nitro: launch",
+      "type": "npm",
+      "script": "nitro:launch",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": [],
+      "isBackground": true
+    },
+    {
+      "label": "apex nitro: build",
+      "type": "npm",
+      "script": "nitro:build",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
     }
   ],
   "inputs": [

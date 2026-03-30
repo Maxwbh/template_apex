@@ -1,0 +1,18 @@
+{
+  "mode": "basic",
+  "appUrl": "https://ALTERE_SERVIDOR/ords/f?p=ALTERE_APP_ID",
+  "srcFolder": "./www/src",
+  "distFolder": "./www/dist",
+  "libraryName": "template-apex",
+  "launch": {
+    "port": 4000,
+    "ghostMode": false,
+    "notify": true,
+    "open": true,
+    "openBrowser": "default"
+  },
+  "upload": {
+    "destination": "application",
+    "pluginName": ""
+  }
+}

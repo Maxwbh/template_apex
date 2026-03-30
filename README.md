@@ -1,5 +1,5 @@
 <p align="center">
-  <strong>Template APEX v2.2.0</strong><br>
+  <strong>Template APEX v2.4.0</strong><br>
   Template profissional para Oracle 19-26, APEX 24.2 e PL/SQL
 </p>
 
@@ -7,6 +7,7 @@
   <a href="https://github.com/maxwbh/template_apex"><img src="https://img.shields.io/badge/Oracle-19--26-red?style=for-the-badge&logo=oracle" alt="Oracle 19-26"></a>
   <a href="https://github.com/maxwbh/template_apex"><img src="https://img.shields.io/badge/APEX-24.2-orange?style=for-the-badge&logo=oracle" alt="APEX 24.2"></a>
   <a href="https://github.com/insum-labs/plsql-and-sql-coding-guidelines"><img src="https://img.shields.io/badge/Guideline-Insum%204.4-blue?style=for-the-badge" alt="Guideline Insum 4.4"></a>
+  <a href="https://github.com/OraOpenSource/apex-nitro"><img src="https://img.shields.io/badge/APEX%20Nitro-v5-blueviolet?style=for-the-badge&logo=npm" alt="APEX Nitro v5"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/licença-CC0%201.0-green?style=for-the-badge" alt="Licença"></a>
   <a href="https://github.com/maxwbh"><img src="https://img.shields.io/badge/mantido%20por-%40maxwbh-purple?style=for-the-badge&logo=github" alt="Mantido por @maxwbh"></a>
 </p>
@@ -51,6 +52,7 @@ nano scripts/user-config.sh           # conexão com o banco
 - **Oracle 19-26** — Identity columns (12c+), `timestamp with local time zone`, DDL `IF NOT EXISTS` (23c+)
 - **APEX 24.2** — export com `-skipExportDate`, APIs atualizadas
 - **Guideline Insum 4.4** — prefixos `l_`, `p_`, `gc_`, `t_`, Logger, documentação
+- **[APEX Nitro](https://github.com/OraOpenSource/apex-nitro)** — live reload, browser sync, minificação CSS/JS
 - **Build automatizado** — gera scripts de release com um comando
 - **Integração VSCode** — compile PL/SQL com warnings habilitados
 - **Templates prontos** — tabelas, packages, views e dados
@@ -146,12 +148,14 @@ template_apex/
 |-- templates/            # Templates de código
 |-- triggers/             # Triggers do banco
 |-- views/                # Views do banco
-+-- www/                  # Assets web (CSS, JS, imagens)
-    +-- src/
-        |-- css/
-        |-- img/
-        |-- js/
-        +-- lib/
+|-- apexnitro.config.json  # Configuração do APEX Nitro
++-- www/                   # Desenvolvimento front-end (APEX Nitro)
+    |-- src/               # Arquivos fonte (editáveis)
+    |   |-- css/app.css    # Estilos da aplicação
+    |   |-- js/app.js      # JavaScript da aplicação
+    |   |-- img/           # Imagens do projeto
+    |   +-- lib/           # Bibliotecas de terceiros
+    +-- dist/              # Saída do build (gerado, .gitignore)
 ```
 
 ---
@@ -276,6 +280,34 @@ Use as tarefas integradas para compilar sem sair do editor:
 | `Ctrl+Shift+B` | `gerar objeto: <projeto>` | Cria novo objeto via template |
 
 > Veja detalhes completos em [`.vscode/README.md`](.vscode/README.md)
+
+---
+
+## Desenvolvimento Front-End — APEX Nitro
+
+Este template inclui o [APEX Nitro](https://github.com/OraOpenSource/apex-nitro) para desenvolvimento front-end com live reload e browser sync.
+
+```bash
+# Instalar dependências (primeira vez)
+npm install
+
+# Iniciar desenvolvimento com live reload
+npm run nitro:launch
+
+# Compilar e minificar para produção
+npm run nitro:build
+
+# Enviar para o APEX via SQLcl
+npm run nitro:upload
+```
+
+| Arquivo | Descrição |
+|:--|:--|
+| `www/src/css/app.css` | Estilos CSS da aplicação |
+| `www/src/js/app.js` | JavaScript da aplicação |
+| `apexnitro.config.json` | Configuração do APEX Nitro |
+
+> Veja o guia completo em [`www/README.md`](www/README.md)
 
 ---
 
