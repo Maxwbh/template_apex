@@ -1,9 +1,13 @@
 {
   "name": "template-apex",
-  "version": "2.3.0",
-  "description": "Template Oracle APEX 24.2 / Oracle 19-26 — Guideline Insum 4.4 — Mantido por @maxwbh (M&S do Brasil LTDA)",
+  "version": "2.4.0",
+  "description": "Template Oracle APEX 24.2 / Oracle 19-26 — Guideline Insum 4.4 + APEX Nitro — Mantido por @maxwbh (M&S do Brasil LTDA)",
   "main": "index.js",
   "scripts": {
+    "nitro:init": "apex-nitro init",
+    "nitro:launch": "apex-nitro launch",
+    "nitro:build": "apex-nitro build",
+    "nitro:upload": "apex-nitro upload",
     "test": "echo \"Erro: nenhum teste especificado\" && exit 1"
   },
   "repository": {
@@ -15,10 +19,15 @@
     "oracle",
     "plsql",
     "template",
-    "projeto"
+    "projeto",
+    "apex-nitro",
+    "frontend"
   ],
   "author": "maxwbh - Maxwell da Silva Oliveira (M&S do Brasil LTDA)",
   "license": "CC0-1.0",
+  "devDependencies": {
+    "apex-nitro": "^5.0.2"
+  },
   "bugs": {
     "url": "https://github.com/maxwbh/template_apex/issues"
   },

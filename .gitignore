@@ -15,6 +15,10 @@ logs
 # Configuração APEX
 apexcl.config.json
 
+# APEX Nitro — build e upload (gerados automaticamente)
+www/build
+www/dist
+
 # Arquivos de backup gerados pelo sed
 *-bak
 *.sql-bak

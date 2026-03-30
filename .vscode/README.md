@@ -30,6 +30,8 @@ Acesse com `Ctrl+Shift+B` (Windows/Linux) ou `Cmd+Shift+B` (macOS):
 | **Compilar** | `compilar: <projeto>` | Compila o arquivo PL/SQL aberto no editor |
 | **Exportar APEX** | `exportar apex: <projeto>` | Exporta todas as aplicações APEX configuradas |
 | **Gerar Objeto** | `gerar objeto: <projeto>` | Cria novo package, view ou script de dados |
+| **APEX Nitro: Launch** | `apex nitro: launch` | Inicia live reload + browser sync (front-end) |
+| **APEX Nitro: Build** | `apex nitro: build` | Compila e minifica CSS/JS para produção |
 
 > Os nomes das tarefas são atualizados automaticamente com o nome da pasta do projeto na primeira execução.
 
