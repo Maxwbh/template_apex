@@ -10,4 +10,4 @@ from dual t
 where 1 = 1
 ;
 
-comment on table CHANGEME is 'TODO: descricao da view';
+comment on table CHANGEME is 'TODO: descrição da view';

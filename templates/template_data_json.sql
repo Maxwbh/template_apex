@@ -1,12 +1,12 @@
 set define off;
 
--- Guideline G-5070: scripts de dados devem ser re-executaveis (usar MERGE)
--- Oracle 26: suporte aprimorado a json_table
+-- Guideline G-5070: scripts de dados devem ser re-executáveis (usar MERGE)
+-- Oracle 12c+: json_table disponível desde 12.1.0.2
 
 prompt Carregando dados de CHANGE_ME
 
 declare
-  -- Guideline G-1130: l_ prefixo para variaveis locais
+  -- Guideline G-1130: l_ prefixo para variáveis locais
   l_json clob;
 begin
 
@@ -15,7 +15,7 @@ begin
 [
   {
     "CHANGE_ME_code": "TODO_CODE",
-    "CHANGE_ME_name": "TODO Descricao",
+    "CHANGE_ME_name": "TODO Descrição",
     "CHANGE_ME_seq": 1
   }
 ]
@@ -34,7 +34,7 @@ begin
     )) jt
   ) loop
 
-    -- Guideline G-5070: usar MERGE para idempotencia
+    -- Guideline G-5070: usar MERGE para idempotência
     merge into CHANGE_ME dest
     using (
       select l_rec.CHANGE_ME_code as CHANGE_ME_code

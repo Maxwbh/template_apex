@@ -1,7 +1,7 @@
 set define off;
 
--- Guideline G-5070: scripts de dados devem ser re-executaveis (usar MERGE)
--- Guideline G-1130: l_ prefixo para variaveis locais
+-- Guideline G-5070: scripts de dados devem ser re-executáveis (usar MERGE)
+-- Guideline G-1130: l_ prefixo para variáveis locais
 
 prompt Carregando dados de CHANGE_ME
 
@@ -20,14 +20,14 @@ begin
   -- 3: CHANGE_ME_seq
 
   -- TODO: adicionar dados abaixo
-  -- l_data(l_data.count + 1) := t_rec_data('CODIGO', 'Descricao', '1');
+  -- l_data(l_data.count + 1) := t_rec_data('CODIGO', 'Descrição', '1');
 
   for i in 1..l_data.count loop
     l_row.CHANGE_ME_code := l_data(i)(1);
     l_row.CHANGE_ME_name := l_data(i)(2);
     l_row.CHANGE_ME_seq  := l_data(i)(3);
 
-    -- Guideline G-5070: usar MERGE para idempotencia
+    -- Guideline G-5070: usar MERGE para idempotência
     merge into CHANGE_ME dest
     using (
       select l_row.CHANGE_ME_code as CHANGE_ME_code
