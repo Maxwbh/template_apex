@@ -4,59 +4,24 @@
  * Este arquivo é o ponto de entrada principal para CSS.
  * O APEX Nitro sincroniza automaticamente as alterações com o navegador.
  *
- * Boas práticas:
- * - Use classes com prefixo do projeto (ex: .ta-header, .ta-card)
- * - Evite !important — prefira especificidade CSS
- * - Organize por componente/página
- *
  * @author @maxwbh
  * @project template-apex
  */
 
-/* ==========================================================================
-   Variáveis CSS customizadas (Custom Properties)
-   ========================================================================== */
 :root {
-  /* Cores do tema */
   --ta-color-primary: #1a73e8;
   --ta-color-secondary: #5f6368;
   --ta-color-success: #34a853;
   --ta-color-warning: #fbbc04;
   --ta-color-danger: #ea4335;
 
-  /* Tipografia */
   --ta-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
   --ta-font-size-base: 14px;
   --ta-line-height-base: 1.5;
 
-  /* Espaçamento */
   --ta-spacing-xs: 4px;
   --ta-spacing-sm: 8px;
   --ta-spacing-md: 16px;
   --ta-spacing-lg: 24px;
   --ta-spacing-xl: 32px;
 }
-
-/* ==========================================================================
-   Estilos globais
-   ========================================================================== */
-
-/* Exemplo: customização de região APEX */
-/* .ta-region-destaque {
-  border-left: 4px solid var(--ta-color-primary);
-  background-color: #f8f9fa;
-  padding: var(--ta-spacing-md);
-} */
-
-/* Exemplo: botão customizado */
-/* .ta-btn-acao {
-  background-color: var(--ta-color-primary);
-  color: #fff;
-  border-radius: 4px;
-  padding: var(--ta-spacing-sm) var(--ta-spacing-md);
-  transition: background-color 0.2s ease;
-} */
-
-/* .ta-btn-acao:hover {
-  background-color: #1557b0;
-} */
