@@ -1,10 +1,10 @@
 # Dados
 
-> Scripts re-executaveis para tabelas de lookup, LOVs e dados iniciais (seed).
+> Scripts re-executáveis para tabelas de lookup, LOVs e dados iniciais (seed).
 
 ---
 
-## Inicio Rapido
+## Início Rápido
 
 ```bash
 source scripts/helper.sh
@@ -22,13 +22,13 @@ gen_object data_json data_categorias
 
 ## Como funciona
 
-- Cada arquivo usa `MERGE` para ser **re-executavel** com seguranca
-- A associacao e feita por **codigo** (nao por ID), evitando problemas entre ambientes
+- Cada arquivo usa `MERGE` para ser **re-executável** com segurança
+- A associação é feita por **código** (não por ID), evitando problemas entre ambientes
 - Nomenclatura recomendada: `data_<nome_tabela>.sql`
 
 ---
 
-## Exemplo Pratico
+## Exemplo Prático
 
 ```sql
 -- data/data_status_pedido.sql
@@ -41,7 +41,7 @@ declare
   type tab_data is table of rec_data index by pls_integer;
   l_data tab_data;
 begin
-  -- 1: code  2: descricao  3: sequencia
+  -- 1: code  2: descrição  3: sequência
   l_data(l_data.count + 1) := rec_data('PENDENTE',  'Pendente',  1);
   l_data(l_data.count + 1) := rec_data('APROVADO',  'Aprovado',  2);
   l_data(l_data.count + 1) := rec_data('ENVIADO',   'Enviado',   3);
@@ -77,7 +77,7 @@ Adicione seus scripts manualmente em [`release/all_data.sql`](../release/all_dat
 @../data/data_tipos_pagamento.sql
 ```
 
-> **Ordem importa!** Scripts com dependencias devem vir depois.
+> **Ordem importa!** Scripts com dependências devem vir depois.
 
 ---
 
@@ -88,7 +88,7 @@ Adicione seus scripts manualmente em [`release/all_data.sql`](../release/all_dat
 | `data_array` | Poucos registros, dados simples | Pequeno (< 50 linhas) |
 | `data_json` | Muitos registros, dados complexos | Grande (> 50 linhas) |
 
-> **Nota:** Atualizacoes pontuais de dados (nao re-executaveis) devem ir em [`release/code/`](../release/code/).
+> **Nota:** Atualizações pontuais de dados (não re-executáveis) devem ir em [`release/code/`](../release/code/).
 
 ---
 
