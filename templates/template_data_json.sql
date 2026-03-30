@@ -18,8 +18,8 @@ begin
     "CHANGE_ME_name": "TODO Descrição",
     "CHANGE_ME_seq": 1
   }
-]!
-';
+]
+!';
 
   -- Guideline G-4120: listar colunas explicitamente
   for l_rec in (
