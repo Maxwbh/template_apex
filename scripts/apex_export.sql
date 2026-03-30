@@ -1,10 +1,10 @@
 
 -- Executar no SQLcl (24.x+)
--- Compativel com Oracle APEX 24.2+ / Oracle 19-26
+-- Compatível com Oracle APEX 24.2+ / Oracle 19-26
 --
--- Parametros:
--- 1: ID da Aplicacao
--- 2: Opcoes de exportacao (opcional). Ex: "-split", "-skipExportDate"
+-- Parâmetros:
+-- 1: ID da Aplicação
+-- 2: Opções de exportação (opcional). Ex: "-split", "-skipExportDate"
 --
 -- Exemplos:
 -- @apex_export.sql 100
@@ -15,7 +15,7 @@ set termout off
 set verify off
 
 
--- Permitir valor opcional para parametro 2
+-- Permitir valor opcional para parâmetro 2
 -- Ref: https://stackoverflow.com/questions/13474899
 column 1 new_value 1
 column 2 new_value 2
@@ -33,7 +33,7 @@ set termout on
 set serveroutput on
 begin
   dbms_output.put_line('ID da App: &APP_ID');
-  dbms_output.put_line('Opcoes de Exportacao: &EXPORT_OPTIONS');
+  dbms_output.put_line('Opções de Exportação: &EXPORT_OPTIONS');
   dbms_output.put_line('------------------');
 end;
 /
