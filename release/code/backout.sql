@@ -1,0 +1,11 @@
+-- Script de Backout (Reversão)
+--
+-- Adicione aqui as instruções SQL para reverter as alterações deste release.
+-- Este arquivo deve conter os comandos necessários para desfazer as mudanças
+-- caso o release precise ser revertido.
+--
+-- Exemplo:
+-- ALTER TABLE minha_tabela DROP COLUMN nova_coluna;
+-- DROP VIEW minha_view_nova;
+--
+-- Mantido por: @maxwbh (Maxwell da Silva Oliveira - M&S do Brasil LTDA)

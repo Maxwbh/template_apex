@@ -1,0 +1,4 @@
+-- Referências específicas do release para arquivos nesta pasta
+-- Este arquivo é executado automaticamente a partir do arquivo /release/_release.sql
+--
+-- Ex: @code/issue-123.sql
